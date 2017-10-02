@@ -96,8 +96,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     @objc func handleComposeLabelTap(_ sender: UITapGestureRecognizer) {
         let composeController = ComposeController()
-        let composeNavbarController = UINavigationController(rootViewController: composeController)
-        present(composeNavbarController, animated: true, completion: nil)
+        let navController = UINavigationController(rootViewController: composeController)
+    	 present(navController, animated: true, completion: nil)
     }
     
     // Collection View Cell
