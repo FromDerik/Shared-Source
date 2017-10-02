@@ -29,9 +29,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.title = "Home"
         navigationItem.leftBarButtonItem = logoutButton
         
-        collectionView?.backgroundColor = UIColor(r:40 g:40 b:40)
+        collectionView?.backgroundColor = UIColor(r:40, g:40, b:40)
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: .header, withReuseIdentifier: headerId)
+        collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
     
     func fetchUsers() {
