@@ -17,6 +17,7 @@
 		2FFD951E1F8275F5002C7AB1 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD951D1F8275F5002C7AB1 /* HomeController.swift */; };
 		2FFD95201F82762D002C7AB1 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD951F1F82762D002C7AB1 /* LoginController.swift */; };
 		2FFD95221F82764C002C7AB1 /* ComposeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD95211F82764C002C7AB1 /* ComposeController.swift */; };
+		2FFD95251F82787A002C7AB1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD95241F82787A002C7AB1 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		2FFD951D1F8275F5002C7AB1 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		2FFD951F1F82762D002C7AB1 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		2FFD95211F82764C002C7AB1 /* ComposeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeController.swift; sourceTree = "<group>"; };
+		2FFD95241F82787A002C7AB1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				2FFD95071F827477002C7AB1 /* Assets.xcassets */,
 				2FFD95091F827477002C7AB1 /* LaunchScreen.storyboard */,
 				2FFD950C1F827477002C7AB1 /* Info.plist */,
+				2FFD95231F82786C002C7AB1 /* Helpers */,
 			);
 			path = "Shared Source";
 			sourceTree = "<group>";
@@ -101,6 +104,14 @@
 				2FFD95211F82764C002C7AB1 /* ComposeController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		2FFD95231F82786C002C7AB1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				2FFD95241F82787A002C7AB1 /* Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FFD95191F827574002C7AB1 /* HeaderCell.swift in Sources */,
+				2FFD95251F82787A002C7AB1 /* Extensions.swift in Sources */,
 				2FFD95141F8274CA002C7AB1 /* Users.swift in Sources */,
 				2FFD951E1F8275F5002C7AB1 /* HomeController.swift in Sources */,
 				2FFD95161F82750A002C7AB1 /* Posts.swift in Sources */,
