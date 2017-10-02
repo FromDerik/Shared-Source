@@ -22,7 +22,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         checkIfUserIsLoggedIn()
-        //        fetchPosts()
+//        fetchPosts()
         fetchUsers()
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
