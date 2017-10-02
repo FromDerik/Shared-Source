@@ -14,7 +14,7 @@ class PostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor(r:55 g:55 b:55)
     }
     
     let userLabel: UILabel = {
@@ -37,6 +37,8 @@ class PostCell: UICollectionViewCell {
     let postTextView: UITextView = {
         let tv = UITextView()
 //        tv.backgroundColor = .blue
+        tv.isEditable = false
+        tv.isSelectable = false
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
@@ -49,8 +51,6 @@ class PostCell: UICollectionViewCell {
     }()
     
     func setupViews() {
-//        self.backgroundColor = .yellow
-        
         addSubview(titleLabel)
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
