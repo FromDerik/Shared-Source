@@ -36,7 +36,7 @@ class PostCell: UICollectionViewCell {
     
     let postTextView: UITextView = {
         let tv = UITextView()
-//        tv.backgroundColor = .blue
+        tv.backgroundColor = UIColor(r:55, g: 55, b:55)
         tv.isEditable = false
         tv.isSelectable = false
         tv.textColor = .white
