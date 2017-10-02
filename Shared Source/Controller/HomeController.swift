@@ -13,7 +13,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     let cellId = "cellId"
     let headerId = "headerId"
-    let footerId = "footerId"
     
     var posts = [Posts]()
     var users = [Users]()
