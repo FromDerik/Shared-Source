@@ -16,7 +16,7 @@ class ComposeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(r: 55, g: 55, b: 55)
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
@@ -30,8 +30,8 @@ class ComposeController: UIViewController {
     
     let titleTextField: UITextField = {
         let title = UITextField()
-        title.placeholder = "An interesting title"
-        title.backgroundColor = .blue
+        title.placeholder = "Add an interesting title"
+        title.textColor = .white
         title.adjustsFontSizeToFitWidth = true
         title.font = UIFont.systemFont(ofSize: 20)
         title.minimumFontSize = 8
@@ -41,7 +41,7 @@ class ComposeController: UIViewController {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = UIColor(r: 40, g: 40, b: 40)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -49,7 +49,7 @@ class ComposeController: UIViewController {
     let postTextView: UITextView = {
         let post = UITextView()
         post.font = UIFont.systemFont(ofSize: 12)
-        post.backgroundColor = .green
+        post.textColor = .white
         post.translatesAutoresizingMaskIntoConstraints = false
         return post
     }()
@@ -73,7 +73,7 @@ class ComposeController: UIViewController {
         separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
         separator.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         separator.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
         view.addSubview(postTextView)
         postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
