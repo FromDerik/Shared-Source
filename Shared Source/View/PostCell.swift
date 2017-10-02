@@ -20,7 +20,7 @@ class PostCell: UICollectionViewCell {
     let userLabel: UILabel = {
         let label = UILabel()
 //        label.backgroundColor = .red
-        label.textColor = UIColor(r:55, g:55, b:55)
+        label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -29,7 +29,7 @@ class PostCell: UICollectionViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
 //        label.backgroundColor = .green
-        label.textColor = .black
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -39,6 +39,7 @@ class PostCell: UICollectionViewCell {
 //        tv.backgroundColor = .blue
         tv.isEditable = false
         tv.isSelectable = false
+        tv.textColor = .white
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()

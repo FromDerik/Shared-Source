@@ -21,6 +21,7 @@ class HeaderCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Post something interesting"
         label.textAlignment = .center
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
