@@ -14,11 +14,12 @@ class PostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        self.backgroundColor = .white
     }
     
-    let authorLabel: UILabel = {
+    let userLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .red
+//        label.backgroundColor = .red
         label.textColor = UIColor(r:55, g:55, b:55)
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +28,7 @@ class PostCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .green
+//        label.backgroundColor = .green
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -35,7 +36,7 @@ class PostCell: UICollectionViewCell {
     
     let postTextView: UITextView = {
         let tv = UITextView()
-        tv.backgroundColor = .blue
+//        tv.backgroundColor = .blue
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
@@ -48,7 +49,7 @@ class PostCell: UICollectionViewCell {
     }()
     
     func setupViews() {
-        self.backgroundColor = .yellow
+//        self.backgroundColor = .yellow
         
         addSubview(titleLabel)
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
@@ -56,14 +57,14 @@ class PostCell: UICollectionViewCell {
         titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        addSubview(authorLabel)
-        authorLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
-        authorLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
-        authorLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
-        authorLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        addSubview(userLabel)
+        userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        userLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        userLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+        userLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         addSubview(postTextView)
-        postTextView.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 8).isActive = true
+        postTextView.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8).isActive = true
         postTextView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         postTextView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
         postTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true

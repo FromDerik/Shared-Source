@@ -14,9 +14,10 @@ class HeaderCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        self.backgroundColor = .white
     }
     
-    let compostPostLabel: UILabel = {
+    let composeLabel: UILabel = {
         let label = UILabel()
         label.text = "Post something interesting"
         label.textAlignment = .center
@@ -24,12 +25,26 @@ class HeaderCell: UICollectionViewCell {
         return label
     }()
     
+    let cellSeparator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     func setupViews() {
-        addSubview(compostPostLabel)
-        compostPostLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        compostPostLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
-        compostPostLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
-        compostPostLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true
+        
+        addSubview(cellSeparator)
+        cellSeparator.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        cellSeparator.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        cellSeparator.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+        addSubview(composeLabel)
+        composeLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        composeLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        composeLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        composeLabel.bottomAnchor.constraint(equalTo: cellSeparator.topAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

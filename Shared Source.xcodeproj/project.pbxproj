@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F2DEE441F8288E000284444 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F2DEE431F8288B200284444 /* GoogleService-Info.plist */; };
 		2FFD95011F827477002C7AB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD95001F827477002C7AB1 /* AppDelegate.swift */; };
 		2FFD95081F827477002C7AB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD95071F827477002C7AB1 /* Assets.xcassets */; };
 		2FFD950B1F827477002C7AB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD95091F827477002C7AB1 /* LaunchScreen.storyboard */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		0BCBDB5235ED88D7D4F99516 /* Pods_Shared_Source.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shared_Source.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F2DEE431F8288B200284444 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2FFD94FD1F827477002C7AB1 /* Shared Source.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shared Source.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FFD95001F827477002C7AB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FFD95071F827477002C7AB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -36,7 +38,6 @@
 		2FFD951F1F82762D002C7AB1 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		2FFD95211F82764C002C7AB1 /* ComposeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeController.swift; sourceTree = "<group>"; };
 		2FFD95241F82787A002C7AB1 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		2FFD95261F827D49002C7AB1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4C987F02DC1ECC0EBCD76331 /* Pods-Shared Source.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared Source.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shared Source/Pods-Shared Source.release.xcconfig"; sourceTree = "<group>"; };
 		C1CCA5A3F4FD5001258E31EF /* Pods-Shared Source.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared Source.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Shared Source/Pods-Shared Source.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,7 +82,7 @@
 				2FFD95071F827477002C7AB1 /* Assets.xcassets */,
 				2FFD95091F827477002C7AB1 /* LaunchScreen.storyboard */,
 				2FFD950C1F827477002C7AB1 /* Info.plist */,
-				2FFD95261F827D49002C7AB1 /* GoogleService-Info.plist */,
+				2F2DEE431F8288B200284444 /* GoogleService-Info.plist */,
 				2FFD95231F82786C002C7AB1 /* Helpers */,
 			);
 			path = "Shared Source";
@@ -204,6 +205,7 @@
 			files = (
 				2FFD950B1F827477002C7AB1 /* LaunchScreen.storyboard in Resources */,
 				2FFD95081F827477002C7AB1 /* Assets.xcassets in Resources */,
+				2F2DEE441F8288E000284444 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,15 +22,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         checkIfUserIsLoggedIn()
-//        fetchPosts()
-        fetchUsers()
+        fetchPosts()
+//        fetchUsers()
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         navigationItem.title = "Home"
         navigationItem.leftBarButtonItem = logoutButton
         
-        collectionView?.backgroundColor = .white
+        collectionView?.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: footerId)
@@ -52,14 +52,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func fetchPosts() {
-        let uid = Auth.auth().currentUser?.uid
-        
-        Database.database().reference().child("users").child(uid!).child("posts").observe(.childAdded, with: { (snapshot) in
+        Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: String] {
-                print(dictionary)
+//                print(dictionary)
                 let post = Posts()
-                post.author = dictionary["author"]
+                post.user = dictionary["user"]
                 post.title = dictionary["title"]
                 post.post = dictionary["post"]
                 self.posts.append(post)
@@ -107,14 +105,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // Collection View Cell
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return users.count
+        return posts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
-        let user = users[indexPath.row]
-        cell.titleLabel.text = user.username
-        cell.authorLabel.text = user.email
+        let post = posts[indexPath.row]
+        cell.userLabel.text = post.user
+        cell.titleLabel.text = post.title
+        cell.postTextView.text = post.post
         return cell
     }
     
@@ -125,25 +124,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // Collection View Header / Footer
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
-            header.backgroundColor = .blue
-            let tap = UITapGestureRecognizer(target: self, action: #selector(handleComposeLabelTap(_:)))
-            header.addGestureRecognizer(tap)
-            return header
-        } else {
-            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath)
-            footer.backgroundColor = .green
-            return footer
-        }
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
+//        header.backgroundColor = .blue
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleComposeLabelTap(_:)))
+        header.addGestureRecognizer(tap)
+        return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 100)
+        return CGSize(width: view.frame.width, height: 80)
     }
     
 }

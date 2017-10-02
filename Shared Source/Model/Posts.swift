@@ -9,7 +9,7 @@
 import UIKit
 
 class Posts: NSObject {
-    var author: String?
+    var user: String?
     var title: String?
     var post: String?
 }
