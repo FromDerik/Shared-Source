@@ -1,4 +1,5 @@
 # Shared-Source
+An app to ask development questions or post bits of code for others to check out
 
 ## Compiling:
 1. Clone repo
