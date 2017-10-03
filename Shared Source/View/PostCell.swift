@@ -14,20 +14,20 @@ class PostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = UIColor(r:55, g:55, b:55)
+        self.backgroundColor = UIColor(named: "lighterBlueColor")
     }
-    
-    let userLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let userLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(white: 1, alpha: 0.5)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -57,7 +57,7 @@ class PostCell: UICollectionViewCell {
         titleLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         addSubview(userLabel)
-        userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
+        userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
         userLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         userLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
         userLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true

@@ -32,7 +32,7 @@ class LoginController: UIViewController {
     
     let loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(r:55, g:55, b:55) //UIColor(r: 79, g: 101, b: 161)
+        button.backgroundColor = UIColor(named: "lighterBlueColor") //UIColor(r: 79, g: 101, b: 161)
         button.setTitle("Register", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -83,7 +83,7 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(r: 40, g: 40, b:40) //UIColor(r: 61, g: 91, b: 151)
+        view.backgroundColor = UIColor(named: "darkerBlueColor") //UIColor(r: 61, g: 91, b: 151)
         
         view.addSubview(loginSegmentedController)
         view.addSubview(inputsContainerView)

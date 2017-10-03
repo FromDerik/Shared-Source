@@ -16,7 +16,7 @@ class ComposeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(r: 55, g: 55, b: 55)
+        view.backgroundColor = UIColor(named: "lighterBlueColor")
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
@@ -30,7 +30,7 @@ class ComposeController: UIViewController {
     
     let titleTextField: UITextField = {
         let title = UITextField()
-        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:1, alpha:0.5)])
         title.textColor = .white
         title.adjustsFontSizeToFitWidth = true
         title.font = UIFont.systemFont(ofSize: 20)
@@ -41,7 +41,7 @@ class ComposeController: UIViewController {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 40, g: 40, b: 40)
+        view.backgroundColor = UIColor(named: "darkerBlueColor")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
