@@ -8,5 +8,6 @@ Compiling:
   'Firebase/Core'
   'Firebase/Database'
   'Firebase/Auth'
-5. Contact me for the required google-info.plist file
-6. Once recieved plist, add to the project and compile
+5. Save podfile
+6. 'pod install'
+7. Open .xcworkspace and compile
