@@ -14,6 +14,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellId"
     let headerId = "headerId"
     
+    var currentUser = Users()
     var posts = [Posts]()
     var users = [Users]()
     
@@ -23,6 +24,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         checkIfUserIsLoggedIn()
         fetchPosts()
 //        fetchUsers()
+//		  we dont need to collect all users
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
@@ -32,28 +34,31 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.backgroundColor = UIColor(named: "darkerBlueColor")
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView.isRefreshable = yes
     }
     
-    func fetchUsers() {
-        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String: String] {
-                let user = Users()
-                user.username = dictionary["username"]
-                user.email = dictionary["email"]
-                self.users.append(user)
-                
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
+    func checkIfUserIsLoggedIn() {
+        if Auth.auth().currentUser == nil {
+            print("No users logged in")
+            perform(#selector(handleLogout), with: nil, afterDelay: 0)
+        } else {
+            let uid = Auth.auth().currentUser?.uid
+            Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    // Do stuff with current users info here
+                    let user = Users()
+                    user.username = dictionary["username"]
+                    user.email = dictionary["email"]
+                    self.currentUser = user
+                    self.navigationItem.title = currentUser.username
                 }
-            }
-        }, withCancel: nil)
+            }, withCancel: nil)
+        }
     }
     
     func fetchPosts() {
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
-            
-            if let dictionary = snapshot.value as? [String: String] {
-//                print(dictionary)
+            if let dictionary = snapshot.value as? [String: String] { 
                 let post = Posts()
                 post.user = dictionary["user"]
                 post.title = dictionary["title"]
@@ -67,20 +72,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }, withCancel: nil)
     }
     
-    func checkIfUserIsLoggedIn() {
-        if Auth.auth().currentUser == nil {
-            print("No users logged in")
-            perform(#selector(handleLogout), with: nil, afterDelay: 0)
-        } else {
-            let uid = Auth.auth().currentUser?.uid
-            Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    // Do stuff with current users info here
-                    self.navigationItem.title = dictionary["username"] as? String
-                }
-            }, withCancel: nil)
-        }
-    }
+/*    func fetchUsers() {
+        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
+            if let dictionary = snapshot.value as? [String: String] {
+                let user = Users()
+                user.username = dictionary["username"]
+                user.email = dictionary["email"]
+                self.users.append(user)
+                
+                // do stuff with users here
+            }
+        }, withCancel: nil)
+    } */
     
     @objc func handleLogout() {
         
@@ -116,21 +119,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 150)
+        return CGSize(width: view.frame.width - 4, height: 150)
     }
     
     // Collection View Header / Footer
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
-//        header.backgroundColor = .blue
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleComposeLabelTap(_:)))
         header.addGestureRecognizer(tap)
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
+        return CGSize(width: view.frame.width - 4, height: 80)
     }
     
 }
