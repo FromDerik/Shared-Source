@@ -30,7 +30,7 @@ class ComposeController: UIViewController {
     
     let titleTextField: UITextField = {
         let title = UITextField()
-        title.placeholder = "Add an interesting title"
+        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
         title.textColor = .white
         title.adjustsFontSizeToFitWidth = true
         title.font = UIFont.systemFont(ofSize: 20)
@@ -50,6 +50,7 @@ class ComposeController: UIViewController {
         let post = UITextView()
         post.font = UIFont.systemFont(ofSize: 12)
         post.textColor = .white
+        post.backgroundColor = .clear
         post.translatesAutoresizingMaskIntoConstraints = false
         return post
     }()
