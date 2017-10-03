@@ -34,9 +34,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.backgroundColor = UIColor(named: "darkerBlueColor")
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
-        collectionView?.isRefreshable = yes
-        collectionView?.rowHeight = UITableViewAutomaticDimension
-		collectionView?.estimatedRowHeight = 140
     }
     
     func checkIfUserIsLoggedIn() {
@@ -46,13 +43,13 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         } else {
             let uid = Auth.auth().currentUser?.uid
             Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: AnyObject] {
+                if let dictionary = snapshot.value as? [String: String] {
                     // Do stuff with current users info here
                     let user = Users()
                     user.username = dictionary["username"]
                     user.email = dictionary["email"]
                     self.currentUser = user
-                    self.navigationItem.title = currentUser.username
+                    self.navigationItem.title = self.currentUser.username
                 }
             }, withCancel: nil)
         }
