@@ -34,7 +34,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.backgroundColor = UIColor(named: "darkerBlueColor")
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
-        collectionView.isRefreshable = yes
+        collectionView?.isRefreshable = yes
+        collectionView?.rowHeight = UITableViewAutomaticDimension
+		collectionView?.estimatedRowHeight = 140
     }
     
     func checkIfUserIsLoggedIn() {
