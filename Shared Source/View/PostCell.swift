@@ -42,12 +42,12 @@ class PostCell: UICollectionViewCell {
         return tv
     }()
     
-    let cellSeparator: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    let cellSeparator: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     
     func setupViews() {
         addSubview(titleLabel)
@@ -68,11 +68,11 @@ class PostCell: UICollectionViewCell {
         postTextView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
         postTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8).isActive = true
         
-        addSubview(cellSeparator)
-        cellSeparator.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        cellSeparator.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        cellSeparator.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+//        addSubview(cellSeparator)
+//        cellSeparator.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+//        cellSeparator.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+//        cellSeparator.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+//        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

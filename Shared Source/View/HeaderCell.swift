@@ -28,7 +28,7 @@ class HeaderCell: UICollectionViewCell {
     
     let cellSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = UIColor(r: 40, g: 40, b: 40)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
