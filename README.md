@@ -1,6 +1,6 @@
-## Shared-Source
+# Shared-Source
 
-# Compiling:
+## Compiling:
 1. Clone repo
 2. cd /path/to/project
 3. "pod init"
