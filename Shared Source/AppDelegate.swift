@@ -19,7 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        let homeController = HomeController(collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 1
+        
+        let homeController = HomeController(collectionViewLayout: layout)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
