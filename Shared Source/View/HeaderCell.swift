@@ -39,7 +39,7 @@ class HeaderCell: UICollectionViewCell {
         cellSeparator.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         cellSeparator.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         cellSeparator.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        cellSeparator.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         addSubview(composeLabel)
         composeLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true

@@ -28,8 +28,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
-        navigationItem.title = "Home"
+        let navTitleLabel = UILabel()
+        navTitleLabel.text = "Home"
+        navTitleLabel.textColor = .white
+        
+        navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
+        
+        navigationController?.navigationBar.barTintColor = UIColor(r: 36, g: 52, b: 71)
+        navigationController?.navigationBar.isTranslucent = false
         
         collectionView?.backgroundColor = UIColor(named: "darkerBlueColor")
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
@@ -49,7 +56,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     user.username = dictionary["username"]
                     user.email = dictionary["email"]
                     self.currentUser = user
-                    self.navigationItem.title = self.currentUser.username
+//                    self.navigationItem.title = self.currentUser.username
                 }
             }, withCancel: nil)
         }
@@ -118,7 +125,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width - 4, height: 150)
+        return CGSize(width: view.frame.width, height: 150)
     }
     
     // Collection View Header / Footer
@@ -131,7 +138,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width - 4, height: 80)
+        return CGSize(width: view.frame.width, height: 80)
     }
     
 }

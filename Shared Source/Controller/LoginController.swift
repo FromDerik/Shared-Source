@@ -11,7 +11,6 @@ import Firebase
 
 class LoginController: UIViewController {
     
-    
     let loginSegmentedController: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Login", "Register"])
         sc.selectedSegmentIndex = 0
@@ -33,7 +32,7 @@ class LoginController: UIViewController {
     let loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor(named: "lighterBlueColor") //UIColor(r: 79, g: 101, b: 161)
-        button.setTitle("Register", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(handleLoginRegister), for: .touchUpInside)
@@ -112,7 +111,7 @@ class LoginController: UIViewController {
         inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        inputsContainerViewHeightAnchor = inputsContainerView.heightAnchor.constraint(equalToConstant: 108)
+        inputsContainerViewHeightAnchor = inputsContainerView.heightAnchor.constraint(equalToConstant: 72)
         inputsContainerViewHeightAnchor?.isActive = true
         
         // Username text field
@@ -120,7 +119,7 @@ class LoginController: UIViewController {
         usernameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
         usernameTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         usernameTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor, constant: -24).isActive = true
-        usernameTextFieldHeightAnchor = usernameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
+        usernameTextFieldHeightAnchor = usernameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 0)
         usernameTextFieldHeightAnchor?.isActive = true
         
         // Username separator view
@@ -128,7 +127,7 @@ class LoginController: UIViewController {
         usernameSeparatorView.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor).isActive = true
         usernameSeparatorView.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor).isActive = true
         usernameSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        usernameSeparatorHeightAnchor = usernameSeparatorView.heightAnchor.constraint(equalToConstant: 1)
+        usernameSeparatorHeightAnchor = usernameSeparatorView.heightAnchor.constraint(equalToConstant: 0)
         usernameSeparatorHeightAnchor?.isActive = true
         
         // Email text field
@@ -136,7 +135,7 @@ class LoginController: UIViewController {
         emailTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor).isActive = true
         emailTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         emailTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor, constant: -24).isActive = true
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
+        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/2)
         emailTextFieldHeightAnchor?.isActive = true
         
         // Email separator view
@@ -151,7 +150,7 @@ class LoginController: UIViewController {
         passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         passwordTextField.leftAnchor.constraint(equalTo: inputsContainerView.leftAnchor, constant: 12).isActive = true
         passwordTextField.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor, constant: -24).isActive = true
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3)
+        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/2)
         passwordTextFieldHeightAnchor?.isActive = true
     }
     

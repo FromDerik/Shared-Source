@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 2
+        layout.minimumLineSpacing = 1
         
         let homeController = HomeController(collectionViewLayout: layout)
         
