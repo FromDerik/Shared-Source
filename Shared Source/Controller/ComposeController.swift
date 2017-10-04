@@ -47,7 +47,6 @@ class ComposeController: UIViewController {
         let title = UITextField()
         title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:1, alpha:0.5)])
         title.textColor = .white
-//        title.backgroundColor = UIColor(named: "lighterBlueColor")
         title.adjustsFontSizeToFitWidth = true
         title.font = UIFont.systemFont(ofSize: 20)
         title.minimumFontSize = 8
