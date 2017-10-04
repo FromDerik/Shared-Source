@@ -131,11 +131,15 @@ class ComposeController: UIViewController {
                 }
                 
                 if title.isEmpty {
-                    UIView.animate(withDuration: 1, animations: {
+                    UIView.animate(withDuration: 1.5, animations: {
+                    	self.titleContainerViewTopAnchor?.isActive = false
                         self.titleContainerViewTopAnchor?.constant = 28
+                        self.titleContainerViewTopAnchor?.isActive = true
                     }, completion: { (true) in
-                        UIView.animate(withDuration: 1, animations: {
+                        UIView.animate(withDuration: 1.5, animations: {
+                        	self.titleContainerViewTopAnchor?.isActive = false
                             self.titleContainerViewTopAnchor?.constant = 8
+                            self.titleContainerViewTopAnchor?.isActive = true
                         })
                     })
                     
