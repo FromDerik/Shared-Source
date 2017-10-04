@@ -80,9 +80,12 @@ class ComposeController: UIViewController {
 //        return placeholder
 //    }()
     
+    var titleContainerViewTopAnchor: NSLayoutConstraint?
+    
     func setupViews() {
         view.addSubview(titleContainerView)
-        titleContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        titleContainerViewTopAnchor = titleContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8)
+        titleContainerViewTopAnchor?.isActive = true
         titleContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         titleContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         titleContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -128,18 +131,29 @@ class ComposeController: UIViewController {
                     return
                 }
                 
-                let ref = Database.database().reference()
-                let postsRef = ref.child("posts").childByAutoId()
-                let values = ["user": user, "title": title, "post": post]
-                
-                postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-                    // Successfully saved the post to the database
-                    self.dismiss(animated: true, completion: nil)
-                })
+                if title.isEmpty {
+                    UIView.animate(withDuration: 1, animations: {
+                        self.titleContainerViewTopAnchor?.constant = 28
+                    }, completion: { (true) in
+                        UIView.animate(withDuration: 1, animations: {
+                            self.titleContainerViewTopAnchor?.constant = 8
+                        })
+                    })
+                    
+                } else {
+                    let ref = Database.database().reference()
+                    let postsRef = ref.child("posts").childByAutoId()
+                    let values = ["user": user, "title": title, "post": post]
+                    
+                    postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        // Successfully saved the post to the database
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                }
             }
         }, withCancel: nil)
     }

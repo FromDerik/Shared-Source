@@ -25,6 +25,13 @@ class PostCell: UICollectionViewCell {
         return label
     }()
     
+    let separator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "darkerBlueColor")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let userLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(white: 1, alpha: 0.75)
@@ -39,6 +46,7 @@ class PostCell: UICollectionViewCell {
         tv.isEditable = false
         tv.isSelectable = false
         tv.textColor = .white
+//        tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()

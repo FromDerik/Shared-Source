@@ -14,7 +14,7 @@ class HeaderCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = UIColor(named: "lighterBlueColor")
+        self.backgroundColor = UIColor(named: "normalBlueColor")
     }
     
     let composeLabel: UILabel = {

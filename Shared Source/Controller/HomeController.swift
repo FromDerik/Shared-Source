@@ -65,7 +65,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func fetchPosts() {
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String: String] { 
+            if let dictionary = snapshot.value as? [String: String] {
                 let post = Posts()
                 post.user = dictionary["user"]
                 post.title = dictionary["title"]
@@ -126,7 +126,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 150)
+        return CGSize(width: collectionView.frame.width, height: 150)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
     }
     
     // Collection View Header / Footer
@@ -139,7 +143,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.size.width, height: 80)
+        return CGSize(width: collectionView.frame.width, height: 80)
     }
     
 }
