@@ -36,15 +36,15 @@ class HeaderCell: UICollectionViewCell {
     func setupViews() {
         
         addSubview(cellSeparator)
-        cellSeparator.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        cellSeparator.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        cellSeparator.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        cellSeparator.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        cellSeparator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        cellSeparator.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         addSubview(composeLabel)
-        composeLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        composeLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        composeLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        composeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        composeLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        composeLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         composeLabel.bottomAnchor.constraint(equalTo: cellSeparator.topAnchor).isActive = true
     }
     

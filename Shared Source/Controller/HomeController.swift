@@ -24,18 +24,19 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         checkIfUserIsLoggedIn()
         fetchPosts()
 //        fetchUsers()
-//		  we dont need to collect all users
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         let navTitleLabel = UILabel()
         navTitleLabel.text = "Home"
+        navTitleLabel.font = UIFont.boldSystemFont(ofSize: 17)
         navTitleLabel.textColor = .white
         
         navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
         
         navigationController?.navigationBar.barTintColor = UIColor(r: 36, g: 52, b: 71)
+        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         
         collectionView?.backgroundColor = UIColor(named: "darkerBlueColor")
@@ -138,7 +139,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
+        return CGSize(width: view.frame.size.width, height: 80)
     }
     
 }

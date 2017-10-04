@@ -15,23 +15,39 @@ class ComposeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
         
-        view.backgroundColor = UIColor(named: "lighterBlueColor")
+        view.backgroundColor = UIColor(named: "darkerBlueColor")
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
         
-        navigationItem.title = "Create new post"
+        let navTitleLabel = UILabel()
+        navTitleLabel.text = "Create new post"
+        navTitleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        navTitleLabel.textColor = .white
+        
+        navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = composeButton
         
-        setupViews()
+        navigationController?.navigationBar.barTintColor = UIColor(r: 36, g: 52, b: 71)
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
     }
+    
+    let titleContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "lighterBlueColor")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     let titleTextField: UITextField = {
         let title = UITextField()
         title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:1, alpha:0.5)])
         title.textColor = .white
+//        title.backgroundColor = UIColor(named: "lighterBlueColor")
         title.adjustsFontSizeToFitWidth = true
         title.font = UIFont.systemFont(ofSize: 20)
         title.minimumFontSize = 8
@@ -39,53 +55,60 @@ class ComposeController: UIViewController {
         return title
     }()
     
-    let separator: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(named: "darkerBlueColor")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    let separator: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(named: "darkerBlueColor")
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     
     let postTextView: UITextView = {
         let post = UITextView()
         post.font = UIFont.systemFont(ofSize: 12)
         post.textColor = .white
-        post.backgroundColor = .clear
+        post.backgroundColor = UIColor(named: "lighterBlueColor")
+//        post.textContainerInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
         post.translatesAutoresizingMaskIntoConstraints = false
         return post
     }()
     
-    let postPlaceholder: UILabel = {
-        let placeholder = UILabel()
-        placeholder.text = "Aditional text (optional)"
-        placeholder.textColor = .lightGray
-        placeholder.translatesAutoresizingMaskIntoConstraints = false
-        return placeholder
-    }()
+//    let postPlaceholder: UILabel = {
+//        let placeholder = UILabel()
+//        placeholder.text = "Aditional text (optional)"
+//        placeholder.textColor = .lightGray
+//        placeholder.translatesAutoresizingMaskIntoConstraints = false
+//        return placeholder
+//    }()
     
     func setupViews() {
-        view.addSubview(titleTextField)
-        titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        titleTextField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8).isActive = true
-        titleTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8).isActive = true
-        titleTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        view.addSubview(titleContainerView)
+        titleContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        titleContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        titleContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        titleContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        view.addSubview(separator)
-        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
-        separator.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        separator.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        titleContainerView.addSubview(titleTextField)
+        titleTextField.topAnchor.constraint(equalTo: titleContainerView.topAnchor).isActive = true
+        titleTextField.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor, constant: 5).isActive = true
+        titleTextField.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor, constant: -5).isActive = true
+        titleTextField.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor).isActive = true
+        
+//        view.addSubview(separator)
+//        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
+//        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+//        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+//        separator.heightAnchor.constraint(equalToConstant: 5).isActive = true
         
         view.addSubview(postTextView)
-        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
-        postTextView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8).isActive = true
-        postTextView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8).isActive = true
+        postTextView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
+        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         postTextView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
 //        postTextView.addSubview(postPlaceholder)
 //        postPlaceholder.topAnchor.constraint(equalTo: postTextView.topAnchor).isActive = true
-//        postPlaceholder.leftAnchor.constraint(equalTo: postTextView.leftAnchor).isActive = true
-//        postPlaceholder.rightAnchor.constraint(equalTo: postTextView.rightAnchor).isActive = true
+//        postPlaceholder.leadingAnchor.constraint(equalTo: postTextView.leadingAnchor).isActive = true
+//        postPlaceholder.trailingAnchor.constraint(equalTo: postTextView.trailingAnchor).isActive = true
 //        postPlaceholder.bottomAnchor.constraint(equalTo: postTextView.bottomAnchor).isActive = true
     }
     
