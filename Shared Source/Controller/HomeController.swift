@@ -68,7 +68,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 post.user = dictionary["user"]
                 post.title = dictionary["title"]
                 post.post = dictionary["post"]
-                self.posts.insert(post, atIndex:0)
+                
+                self.posts.insert(post, at:0)
                 
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
