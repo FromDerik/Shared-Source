@@ -17,7 +17,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         setupViews()
         
-        view.backgroundColor = UIColor(named: "lighterBlueColor")
+        view.backgroundColor = .lighterBlue
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
@@ -49,7 +49,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "darkerBlueColor")
+        view.backgroundColor = .darkerBlue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
