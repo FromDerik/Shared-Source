@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ComposeController: UIViewController {
+class ComposeController: UIViewController, UITextViewDelegate {
     
     var currentUser = Users()
     
@@ -17,7 +17,7 @@ class ComposeController: UIViewController {
         super.viewDidLoad()
         setupViews()
         
-        view.backgroundColor = UIColor(named: "darkerBlueColor")
+        view.backgroundColor = UIColor(named: "lighterBlueColor")
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
@@ -36,13 +36,6 @@ class ComposeController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
     }
     
-    let titleContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(named: "lighterBlueColor")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     let titleTextField: UITextField = {
         let title = UITextField()
         title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:1, alpha:0.5)])
@@ -54,34 +47,40 @@ class ComposeController: UIViewController {
         return title
     }()
     
+    let separator: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "darkerBlueColor")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let postTextView: UITextView = {
         let post = UITextView()
         post.font = UIFont.systemFont(ofSize: 12)
         post.textColor = .white
-        post.backgroundColor = UIColor(named: "lighterBlueColor")
-//        post.textContainerInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
         post.translatesAutoresizingMaskIntoConstraints = false
         return post
     }()
     
     func setupViews() {
-        view.addSubview(titleContainerView)
-        titleContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        titleContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        titleContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        titleContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        titleContainerView.addSubview(titleTextField)
-        titleTextField.topAnchor.constraint(equalTo: titleContainerView.topAnchor).isActive = true
-        titleTextField.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor, constant: 5).isActive = true
-        titleTextField.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor, constant: -5).isActive = true
-        titleTextField.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor).isActive = true
+        view.addSubview(titleTextField)
+        titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
+        titleTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        titleTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        view.addSubview(separator)
+        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor).isActive = true
+        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
+        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         view.addSubview(postTextView)
-        postTextView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
-        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        postTextView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
+        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
     @objc func handleComposeButton() {
@@ -97,6 +96,10 @@ class ComposeController: UIViewController {
                 self.currentUser.email = dictionary["email"]
                 
                 guard let title = self.titleTextField.text, let post = self.postTextView.text, let user = self.currentUser.username else {
+                    return
+                }
+                
+                if title.isEmpty {
                     return
                 }
                 

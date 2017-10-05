@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 class PostCell: UICollectionViewCell {
     
@@ -45,6 +44,7 @@ class PostCell: UICollectionViewCell {
         tv.backgroundColor = .clear
         tv.isEditable = false
         tv.isSelectable = false
+        tv.isScrollEnabled = false
         tv.textColor = .white
 //        tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tv.translatesAutoresizingMaskIntoConstraints = false
