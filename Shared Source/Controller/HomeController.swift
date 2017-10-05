@@ -121,11 +121,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postTextView.text = post.post
+        
+        cell.layer.cornerRadius = 8
+        cell.layer.masksToBounds = true
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 150)
+        return CGSize(width: view.frame.width - 16, height: 150)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
