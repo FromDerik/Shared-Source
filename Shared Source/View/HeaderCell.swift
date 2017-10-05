@@ -13,7 +13,7 @@ class HeaderCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = UIColor(named: "normalBlueColor")
+        self.backgroundColor = .normalBlue
     }
     
     let composeLabel: UILabel = {
@@ -27,7 +27,7 @@ class HeaderCell: UICollectionViewCell {
     
     let cellSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "darkerBlueColor")
+        view.backgroundColor = .darkerBlue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

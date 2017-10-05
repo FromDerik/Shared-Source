@@ -35,11 +35,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
         
-        navigationController?.navigationBar.barTintColor = UIColor(r: 36, g: 52, b: 71)
+        navigationController?.navigationBar.barTintColor = .normalBlue //UIColor(r: 36, g: 52, b: 71)
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         
-        collectionView?.backgroundColor = UIColor(named: "darkerBlueColor")
+        collectionView?.backgroundColor = .darkerBlue
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }

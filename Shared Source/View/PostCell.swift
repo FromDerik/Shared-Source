@@ -13,7 +13,7 @@ class PostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.backgroundColor = UIColor(named: "lighterBlueColor")
+        self.backgroundColor = .lighterBlue
     }
     
     let titleLabel: UILabel = {
@@ -26,7 +26,7 @@ class PostCell: UICollectionViewCell {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "darkerBlueColor")
+        view.backgroundColor = .darkerBlue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
