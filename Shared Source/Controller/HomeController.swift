@@ -57,7 +57,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     user.username = dictionary["username"]
                     user.email = dictionary["email"]
                     self.currentUser = user
-//                    self.navigationItem.title = self.currentUser.username
                 }
             }, withCancel: nil)
         }

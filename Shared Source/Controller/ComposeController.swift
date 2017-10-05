@@ -54,13 +54,6 @@ class ComposeController: UIViewController {
         return title
     }()
     
-//    let separator: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = UIColor(named: "darkerBlueColor")
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-    
     let postTextView: UITextView = {
         let post = UITextView()
         post.font = UIFont.systemFont(ofSize: 12)
@@ -71,20 +64,9 @@ class ComposeController: UIViewController {
         return post
     }()
     
-//    let postPlaceholder: UILabel = {
-//        let placeholder = UILabel()
-//        placeholder.text = "Aditional text (optional)"
-//        placeholder.textColor = .lightGray
-//        placeholder.translatesAutoresizingMaskIntoConstraints = false
-//        return placeholder
-//    }()
-    
-    var titleContainerViewTopAnchor: NSLayoutConstraint?
-    
     func setupViews() {
         view.addSubview(titleContainerView)
-        titleContainerViewTopAnchor = titleContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8)
-        titleContainerViewTopAnchor?.isActive = true
+        titleContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
         titleContainerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         titleContainerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         titleContainerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -95,23 +77,11 @@ class ComposeController: UIViewController {
         titleTextField.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor, constant: -5).isActive = true
         titleTextField.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor).isActive = true
         
-//        view.addSubview(separator)
-//        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
-//        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        separator.heightAnchor.constraint(equalToConstant: 5).isActive = true
-        
         view.addSubview(postTextView)
         postTextView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
         postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         postTextView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
-//        postTextView.addSubview(postPlaceholder)
-//        postPlaceholder.topAnchor.constraint(equalTo: postTextView.topAnchor).isActive = true
-//        postPlaceholder.leadingAnchor.constraint(equalTo: postTextView.leadingAnchor).isActive = true
-//        postPlaceholder.trailingAnchor.constraint(equalTo: postTextView.trailingAnchor).isActive = true
-//        postPlaceholder.bottomAnchor.constraint(equalTo: postTextView.bottomAnchor).isActive = true
     }
     
     @objc func handleComposeButton() {
@@ -130,33 +100,18 @@ class ComposeController: UIViewController {
                     return
                 }
                 
-                if title.isEmpty {
-                    UIView.animate(withDuration: 1.5, animations: {
-                    	self.titleContainerViewTopAnchor?.isActive = false
-                        self.titleContainerViewTopAnchor?.constant = 28
-                        self.titleContainerViewTopAnchor?.isActive = true
-                    }, completion: { (true) in
-                        UIView.animate(withDuration: 1.5, animations: {
-                        	self.titleContainerViewTopAnchor?.isActive = false
-                            self.titleContainerViewTopAnchor?.constant = 8
-                            self.titleContainerViewTopAnchor?.isActive = true
-                        })
-                    })
-                    
-                } else {
-                    let ref = Database.database().reference()
-                    let postsRef = ref.child("posts").childByAutoId()
-                    let values = ["user": user, "title": title, "post": post]
-                    
-                    postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
-                        if error != nil {
-                            print(error!)
-                            return
-                        }
-                        // Successfully saved the post to the database
-                        self.dismiss(animated: true, completion: nil)
-                    })
-                }
+                let ref = Database.database().reference()
+                let postsRef = ref.child("posts").childByAutoId()
+                let values = ["user": user, "title": title, "post": post]
+                
+                postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
+                    if error != nil {
+                        print(error!)
+                        return
+                    }
+                    // Successfully saved the post to the database
+                    self.dismiss(animated: true, completion: nil)
+                })
             }
         }, withCancel: nil)
     }
