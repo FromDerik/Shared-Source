@@ -46,7 +46,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser == nil {
-            print("No users logged in")
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
             let uid = Auth.auth().currentUser?.uid
@@ -69,7 +68,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 post.user = dictionary["user"]
                 post.title = dictionary["title"]
                 post.post = dictionary["post"]
-                self.posts.append(post)
+                self.posts.insert(post, atIndex:0)
                 
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
