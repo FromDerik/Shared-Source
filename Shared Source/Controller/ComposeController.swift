@@ -31,7 +31,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = composeButton
         
-        navigationController?.navigationBar.barTintColor = UIColor(r: 36, g: 52, b: 71)
+        navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
     }
@@ -50,37 +50,41 @@ class ComposeController: UIViewController, UITextViewDelegate {
     let separator: UIView = {
         let view = UIView()
         view.backgroundColor = .darkerBlue
+        view.layer.cornerRadius = 0.5
+        view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     let postTextView: UITextView = {
-        let post = UITextView()
-        post.font = UIFont.systemFont(ofSize: 12)
-        post.textColor = .white
-        post.translatesAutoresizingMaskIntoConstraints = false
-        return post
+        let tv = UITextView()
+        tv.backgroundColor = .clear
+        tv.font = UIFont.systemFont(ofSize: 12)
+        tv.textColor = .white
+        tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        return tv
     }()
     
     func setupViews() {
         
         view.addSubview(titleTextField)
-        titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
-        titleTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
-        titleTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        titleTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        titleTextField.heightAnchor.constraint(equalToConstant: (titleTextField.font?.pointSize)! + 1).isActive = true
         
         view.addSubview(separator)
-        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor).isActive = true
-        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
-        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 4).isActive = true
+        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         view.addSubview(postTextView)
-        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor).isActive = true
-        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 4).isActive = true
+        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
     }
     
     @objc func handleComposeButton() {

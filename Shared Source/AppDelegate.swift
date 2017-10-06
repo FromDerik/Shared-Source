@@ -20,15 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
+//        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
         
         let homeController = HomeController(collectionViewLayout: layout)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = UINavigationController(rootViewController: homeController)
-        
-        
-//        layout.estimatedItemSize = CGSize(width: homeController.view.frame.width, height: 1 )
         
         return true
     }

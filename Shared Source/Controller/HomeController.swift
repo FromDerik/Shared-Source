@@ -35,7 +35,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
         
-        navigationController?.navigationBar.barTintColor = .normalBlue //UIColor(r: 36, g: 52, b: 71)
+        navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         
@@ -121,14 +121,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postTextView.text = post.post
-        
-        cell.layer.cornerRadius = 8
-        cell.layer.masksToBounds = true
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width - 16, height: 150)
+        return CGSize(width: view.frame.width, height: 150)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -145,7 +142,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width - 16, height: 80)
+        return CGSize(width: view.frame.width, height: 80)
     }
     
 }
