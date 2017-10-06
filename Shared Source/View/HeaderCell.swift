@@ -18,7 +18,7 @@ class HeaderCell: UICollectionViewCell {
     
     let composeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Post something interesting"
+        label.text = ""
         label.textAlignment = .center
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ class HeaderCell: UICollectionViewCell {
         cellSeparator.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         cellSeparator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         cellSeparator.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        cellSeparator.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         addSubview(composeLabel)
         composeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
