@@ -33,12 +33,11 @@ class HeaderCell: UICollectionViewCell {
     }()
     
     func setupViews() {
-        
         addSubview(cellSeparator)
         cellSeparator.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         cellSeparator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         cellSeparator.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        cellSeparator.heightAnchor.constraint(equalToConstant: 8).isActive = true
         
         addSubview(composeLabel)
         composeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true

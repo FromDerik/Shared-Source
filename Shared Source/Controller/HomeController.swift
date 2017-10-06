@@ -26,6 +26,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //        fetchUsers()
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleCompose))
         
         let navTitleLabel = UILabel()
         navTitleLabel.text = "Home"
@@ -34,6 +35,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
+        navigationItem.rightBarButtonItem = composeButton
         
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
@@ -103,7 +105,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         present(loginController, animated: true, completion: nil)
     }
     
-    @objc func handleComposeLabelTap(_ sender: UITapGestureRecognizer) {
+    @objc func handleCompose() {
         let composeController = ComposeController()
         let navController = UINavigationController(rootViewController: composeController)
     	 present(navController, animated: true, completion: nil)
@@ -136,13 +138,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleComposeLabelTap(_:)))
-        header.addGestureRecognizer(tap)
         return header
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
+        return CGSize(width: view.frame.width, height: 40)
     }
     
 }
