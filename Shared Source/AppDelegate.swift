@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
-//        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+        layout.sectionHeadersPinToVisibleBounds = true
         
         let homeController = HomeController(collectionViewLayout: layout)
         
