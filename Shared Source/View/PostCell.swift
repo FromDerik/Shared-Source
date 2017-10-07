@@ -14,6 +14,7 @@ class PostCell: UICollectionViewCell {
         super.init(frame: frame)
         setupViews()
         self.backgroundColor = .lighterBlue
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
     
     let titleLabel: UILabel = {

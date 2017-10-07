@@ -16,13 +16,6 @@ class HeaderCell: UICollectionViewCell {
         setupViews()
     }
     
-    let picker: UIView = {
-    	let view = UIView()
-    	view.backgroundColor = .darkerBlue
-    	view.translatesAutoresizingMaskIntoConstraints = false
-    	return view
-    }()
-    
     let separator: UIView = {
         let view = UIView()
         view.backgroundColor = .darkerBlue
@@ -36,12 +29,6 @@ class HeaderCell: UICollectionViewCell {
         separator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         separator.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        addSubview(picker)
-        picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        picker.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        picker.bottomAnchor.constraint(equalTo: separator.topAnchor, constant 8).isActive = true
-        picker.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

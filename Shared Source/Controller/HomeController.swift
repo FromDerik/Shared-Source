@@ -22,7 +22,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         checkIfUserIsLoggedIn()
-        fetchPosts()
 //        fetchUsers()
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -43,7 +42,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView?.backgroundColor = .darkerBlue
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+//        collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
     
     func checkIfUserIsLoggedIn() {
@@ -58,6 +57,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     user.username = dictionary["username"]
                     user.email = dictionary["email"]
                     self.currentUser = user
+                    
+                    self.fetchPosts()
                 }
             }, withCancel: nil)
         }
@@ -71,8 +72,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 post.title = dictionary["title"]
                 post.post = dictionary["post"]
                 
+                // current users posts
+//                if post.user == self.currentUser.username {
+//                    self.posts.insert(post, at:0)
+//                }
+                
+                // all posts
                 self.posts.insert(post, at:0)
-
+                
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
                 }
@@ -136,14 +143,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // Collection View Header / Footer
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
-        return header
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 40)
-    }
+//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
+//        return header
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: view.frame.width, height: 40)
+//    }
     
 }
 
