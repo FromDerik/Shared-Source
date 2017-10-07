@@ -16,16 +16,14 @@ class HeaderCell: UICollectionViewCell {
         self.backgroundColor = .normalBlue
     }
     
-    let composeLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textAlignment = .center
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    let picker: UIView = {
+    	let view = UIView()
+    	view.backgroundColor = .darkerBlue
+    	view.translatesAutoresizingMaskIntoConstraints = false
+    	return view
     }()
     
-    let cellSeparator: UIView = {
+    let separator: UIView = {
         let view = UIView()
         view.backgroundColor = .darkerBlue
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -33,17 +31,17 @@ class HeaderCell: UICollectionViewCell {
     }()
     
     func setupViews() {
-        addSubview(cellSeparator)
-        cellSeparator.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        cellSeparator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        cellSeparator.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        cellSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        addSubview(separator)
+        separator.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        separator.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        separator.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        addSubview(composeLabel)
-        composeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        composeLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        composeLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        composeLabel.bottomAnchor.constraint(equalTo: cellSeparator.topAnchor).isActive = true
+        addSubview(picker)
+        picker.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        picker.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        picker.bottomAnchor.constraint(equalTo: separator.topAnchor, constant 8).isActive = true
+        picker.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
