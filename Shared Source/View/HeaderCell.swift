@@ -12,8 +12,8 @@ class HeaderCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
         self.backgroundColor = .normalBlue
+        setupViews()
     }
     
     let picker: UIView = {
