@@ -18,6 +18,7 @@ class Picker: UIView {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(showViews(_:)))
         addGestureRecognizer(tap)
+        self.clipsToBounds = false
     }
     
     var selectedLabel: UILabel = {
