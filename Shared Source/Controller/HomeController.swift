@@ -15,6 +15,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let headerId = "headerId"
     
     var currentUser = Users()
+    var currentUserPosts = [Posts]()
     var posts = [Posts]()
     var users = [Users]()
     
@@ -51,11 +52,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         } else {
             let uid = Auth.auth().currentUser?.uid
             Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dictionary = snapshot.value as? [String: String] {
+                if let dictionary = snapshot.value as? [String: Any] {
                     // Do stuff with current users info here
                     let user = Users()
-                    user.username = dictionary["username"]
-                    user.email = dictionary["email"]
+                    user.username = dictionary["username"] as? String
+                    user.email = dictionary["email"] as? String
                     self.currentUser = user
                     
                     self.fetchPosts()
@@ -65,17 +66,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func fetchPosts() {
+        posts.removeAll()
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String: String] {
+            if let dictionary = snapshot.value as? [String: Any] {
                 let post = Posts()
-                post.user = dictionary["user"]
-                post.title = dictionary["title"]
-                post.post = dictionary["post"]
+                post.user = dictionary["user"] as? String
+                post.title = dictionary["title"] as? String
+                post.post = dictionary["post"] as? String
                 
                 // current users posts
-//                if post.user == self.currentUser.username {
-//                    self.posts.insert(post, at:0)
-//                }
+                if post.user == self.currentUser.username {
+                    self.currentUserPosts.insert(post, at:0)
+                }
                 
                 // all posts
                 self.posts.insert(post, at:0)

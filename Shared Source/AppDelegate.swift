@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
-//        layout.sectionHeadersPinToVisibleBounds = true
         
         let homeController = HomeController(collectionViewLayout: layout)
         
