@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SearchController: UITableViewController {
+class SearchController: UITableViewController, UISearchBarDelegate {
     
     let cellId = "cellId"
     let headerId = "headerId"
@@ -18,16 +18,23 @@ class SearchController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchUsers()
+        setupNavBar()
+        
         tableView.backgroundColor = .lighterBlue
         tableView.separatorColor = .darkerBlue
         tableView.separatorInset.left = 0
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
-        
+    }
+    
+    func setupNavBar() {
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         
-        fetchUsers()
+        let searchController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     func fetchUsers() {

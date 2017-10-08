@@ -22,28 +22,27 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupNavBar()
         checkIfUserIsLoggedIn()
         
+        collectionView?.backgroundColor = .darkerBlue
+        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
+    }
+    
+    func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
         
-        let navTitleLabel = UILabel()
-        navTitleLabel.text = "Home"
-        navTitleLabel.font = UIFont.boldSystemFont(ofSize: 17)
-        navTitleLabel.textColor = .white
+        navigationItem.title = "Home"
         
-        navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
         
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.prefersLargeTitles = true
         
-        collectionView?.backgroundColor = .darkerBlue
-        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
-//        collectionView?.register(HeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
     
     func checkIfUserIsLoggedIn() {

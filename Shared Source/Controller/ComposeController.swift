@@ -16,9 +16,12 @@ class ComposeController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setupNavBar()
         
         view.backgroundColor = .lighterBlue
-        
+    }
+    
+    func setupNavBar() {
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleComposeButton))
         
