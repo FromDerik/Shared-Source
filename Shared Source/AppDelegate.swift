@@ -23,9 +23,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let homeController = HomeController(collectionViewLayout: layout)
         
+        let homeNavController = UINavigationController(rootViewController: homeController)
+        
+        let composeController = ComposeController()
+        
+        let composeNavController = UINavigationController(rootViewController: composeController)
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [homeNavController, composeNavComtroller]
+        tabBarController.selectedViewController = homeNavController
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: homeController)
+        window?.rootViewController = tabBarController
         
         return true
     }

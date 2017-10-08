@@ -27,6 +27,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleCompose))
+        let homeTab = UITabBarItem(title:"Home", image: nil, selectedImage: nil)
         
         let navTitleLabel = UILabel()
         navTitleLabel.text = "Home"
@@ -40,6 +41,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+        
+        tabBarItem = homeTab
         
         collectionView?.backgroundColor = .darkerBlue
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)

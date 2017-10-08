@@ -21,6 +21,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
+        let composeTab = UITabBarItem(title:"Compose", image: nil, selectedImage: nil)
         
         let navTitleLabel = UILabel()
         navTitleLabel.text = "Create new post"
@@ -30,10 +31,11 @@ class ComposeController: UIViewController, UITextViewDelegate {
         navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = composeButton
-        
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+        
+        tabBarItem = composeTab
     }
     
     let titleTextField: UITextField = {
