@@ -20,8 +20,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
         view.backgroundColor = .lighterBlue
         
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
-        let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleComposeButton))
-        let composeTab = UITabBarItem(title:"Compose", image: nil, selectedImage: nil)
+        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleComposeButton))
         
         let navTitleLabel = UILabel()
         navTitleLabel.text = "Create new post"
@@ -34,8 +33,6 @@ class ComposeController: UIViewController, UITextViewDelegate {
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
-        
-        tabBarItem = composeTab
     }
     
     let titleTextField: UITextField = {

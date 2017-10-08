@@ -20,17 +20,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
-        
         let homeController = HomeController(collectionViewLayout: layout)
-        
         let homeNavController = UINavigationController(rootViewController: homeController)
+        let homeTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
+        homeNavController.tabBarItem = homeTab
         
-        let composeController = ComposeController()
-        
-        let composeNavController = UINavigationController(rootViewController: composeController)
+        let searchController = SearchController()
+        let searchNavController = UINavigationController(rootViewController: searchController)
+        let searchTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "search"), selectedImage: #imageLiteral(resourceName: "search"))
+        searchNavController.tabBarItem = searchTab
         
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [homeNavController, composeNavComtroller]
+        tabBarController.tabBar.tintColor = .white
+        tabBarController.tabBar.barTintColor = .navBlue
+        tabBarController.viewControllers = [homeNavController, searchNavController]
         tabBarController.selectedViewController = homeNavController
         
         window = UIWindow(frame: UIScreen.main.bounds)
