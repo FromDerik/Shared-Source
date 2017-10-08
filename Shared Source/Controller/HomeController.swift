@@ -16,8 +16,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var currentUser = Users()
     var currentUserPosts = [Posts]()
-    var posts = [Posts]()
-    var users = [Users]()
+    
+    var allPosts = [Posts]()
+    var allUsers = [Users]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +79,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 }
                 
                 // all posts
-                self.posts.insert(post, at:0)
+                self.allPosts.insert(post, at:0)
                 
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
@@ -87,18 +88,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }, withCancel: nil)
     }
     
-/*    func fetchUsers() {
+    func fetchUsers() {
         Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: String] {
                 let user = Users()
                 user.username = dictionary["username"]
                 user.email = dictionary["email"]
-                self.users.append(user)
+                self.allUsers.append(user)
                 
                 // do stuff with users here
             }
         }, withCancel: nil)
-    } */
+    }
     
     @objc func handleLogout() {
         
@@ -121,12 +122,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     // Collection View Cell
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        return allPosts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
-        let post = posts[indexPath.row]
+        let post = allPosts[indexPath.row]
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postTextView.text = post.post
