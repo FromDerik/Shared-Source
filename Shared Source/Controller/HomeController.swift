@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class HomeController: UITableViewController {
+class HomeController: UITableViewController, UISearchResultsUpdating {
     
     let cellId = "cellId"
     let headerId = "headerId"
@@ -22,19 +22,19 @@ class HomeController: UITableViewController {
     var allPosts = [Posts]()
     var allUsers = [Users]()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setupNavBar()
-        checkIfUserIsLoggedIn()
-        
-        let resultSearchController: UISearchController = {
+    let resultSearchController: UISearchController = {
             let controller = UISearchController(searchResultsController: nil)
             controller.searchResultsUpdater = self as? UISearchResultsUpdating
             controller.dimsBackgroundDuringPresentation = false
             controller.searchBar.sizeToFit()
             return controller
         }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupNavBar()
+        checkIfUserIsLoggedIn()
         
         tableView.tableHeaderView = resultSearchController.searchBar
         tableView?.backgroundColor = .lighterBlue
@@ -139,20 +139,41 @@ class HomeController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allPosts.count
+    	if resultSearchController.isActive {
+            return filteredPosts.count
+        } else {
+            return allPosts.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PostCell
-        let post = allPosts[indexPath.row]
-        cell.userLabel.text = post.user
-        cell.titleLabel.text = post.title
-        cell.postLabel.text = post.post
+        if resultsSearchController.isActive {
+        	let post = filteredPosts[indexPath.row]
+	        cell.userLabel.text = post.user
+	        cell.titleLabel.text = post.title
+	        cell.postLabel.text = post.post
+        } else {
+	        let post = allPosts[indexPath.row]
+	        cell.userLabel.text = post.user
+	        cell.titleLabel.text = post.title
+	        cell.postLabel.text = post.post
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        filteredPosts.removeAll(keepCapacity: false)
+        
+        let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchController.searchBar.text)
+        let array = (allPosts as NSArray).filteredArrayUsingPredicate(searchPredicate)
+        filteredPosts = array as! [Posts]()
+        
+        self.tableView.reloadData()
     }
     
 }
