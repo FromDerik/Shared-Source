@@ -15,7 +15,7 @@ class HomeController: UITableViewController {
     let headerId = "headerId"
     
     var currentUser = Users()
-    var currentUserPosts = [Posts]()
+    var currentUsersPosts = [Posts]()
     
     var allPosts = [Posts]()
     var allUsers = [Users]()
@@ -29,17 +29,17 @@ class HomeController: UITableViewController {
         tableView?.backgroundColor = .lighterBlue
         tableView.separatorColor = .darkerBlue
         tableView.separatorInset.left = 0
-        tableView.register(PostCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(HomeCell.self, forCellReuseIdentifier: cellId)
     }
     
     func setupNavBar() {
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+//        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
         let navTitleLabel = UILabel()
         navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         
         navigationItem.titleView = navTitleLabel
-        navigationItem.leftBarButtonItem = logoutButton
+//        navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
         
         navigationController?.navigationBar.barTintColor = .navBlue
@@ -74,9 +74,11 @@ class HomeController: UITableViewController {
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
                 
+                post.numberOfComments = dictionary["numberOfComments"] as? Int
+                
                 // current users posts
                 if post.user == self.currentUser.username {
-                    self.currentUserPosts.insert(post, at:0)
+                    self.currentUsersPosts.insert(post, at:0)
                 }
                 
                 // all posts
@@ -120,7 +122,7 @@ class HomeController: UITableViewController {
         present(navController, animated: true, completion: nil)
     }
     
-    // Table View Cell
+    // Table View
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -131,11 +133,17 @@ class HomeController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PostCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! HomeCell
         let post = allPosts[indexPath.row]
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
+        
+        if let numOfComments = post.numberOfComments {
+            cell.commentsButton.setTitle(String(describing: numOfComments), for: .normal)
+            cell.commentsButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        }
+        
         return cell
     }
     

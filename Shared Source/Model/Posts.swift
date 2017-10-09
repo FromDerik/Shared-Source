@@ -12,4 +12,6 @@ class Posts: NSObject {
     var user: String?
     var title: String?
     var post: String?
+    
+    var numberOfComments: Int?
 }

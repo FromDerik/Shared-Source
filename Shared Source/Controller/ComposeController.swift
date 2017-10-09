@@ -19,6 +19,8 @@ class ComposeController: UIViewController, UITextViewDelegate {
         setupNavBar()
         
         view.backgroundColor = .lighterBlue
+        
+        titleTextField.becomeFirstResponder()
     }
     
     func setupNavBar() {
@@ -42,9 +44,10 @@ class ComposeController: UIViewController, UITextViewDelegate {
         let title = UITextField()
         title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:1, alpha:0.5)])
         title.textColor = .white
-        title.adjustsFontSizeToFitWidth = true
-        title.font = UIFont.systemFont(ofSize: 20)
-        title.minimumFontSize = 8
+        title.font = UIFont.systemFont(ofSize: 14)
+//        title.sizeToFit()
+//        title.adjustsFontSizeToFitWidth = true
+//        title.minimumFontSize = 8
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
@@ -71,22 +74,22 @@ class ComposeController: UIViewController, UITextViewDelegate {
     func setupViews() {
         
         view.addSubview(titleTextField)
-        titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        titleTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        titleTextField.heightAnchor.constraint(equalToConstant: (titleTextField.font?.pointSize)! + 1).isActive = true
+        titleTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
+        titleTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        titleTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        titleTextField.heightAnchor.constraint(equalToConstant: (titleTextField.font?.pointSize)! + 2).isActive = true
         
         view.addSubview(separator)
-        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 4).isActive = true
-        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
+        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         view.addSubview(postTextView)
-        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 4).isActive = true
-        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
+        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
+        postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+//        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
     }
     
     @objc func handleComposeButton() {
@@ -97,7 +100,6 @@ class ComposeController: UIViewController, UITextViewDelegate {
         
         Database.database().reference().child("users").child(uid).observe(.value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: String] {
-//                print(dictionary)
                 self.currentUser.username = dictionary["username"]
                 self.currentUser.email = dictionary["email"]
                 
@@ -105,13 +107,13 @@ class ComposeController: UIViewController, UITextViewDelegate {
                     return
                 }
                 
-                if title.isEmpty {
+                if title.isEmpty || post.isEmpty {
                     return
                 }
                 
                 let ref = Database.database().reference()
                 let postsRef = ref.child("posts").childByAutoId()
-                let values = ["user": user, "title": title, "post": post]
+                let values = ["user": user, "title": title, "post": post, ]
                 
                 postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
                     if error != nil {

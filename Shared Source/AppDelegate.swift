@@ -1,4 +1,4 @@
-//
+ //
 //  AppDelegate.swift
 //  Shared Source
 //
@@ -23,10 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let homeTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
         homeNavController.tabBarItem = homeTab
         
+        let profileController = UserProfileController()
+        let profileNavController = UINavigationController(rootViewController: profileController)
+        let profileTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "user"), selectedImage: #imageLiteral(resourceName: "user"))
+        profileNavController.tabBarItem = profileTab
+        
         let tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .white
         tabBarController.tabBar.barTintColor = .navBlue
-        tabBarController.viewControllers = [homeNavController]
+        tabBarController.viewControllers = [homeNavController, profileNavController]
         tabBarController.selectedViewController = homeNavController
         
         window = UIWindow(frame: UIScreen.main.bounds)
