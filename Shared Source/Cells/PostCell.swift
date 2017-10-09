@@ -18,6 +18,7 @@ class PostCell: UITableViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +63,7 @@ class PostCell: UITableViewCell {
         titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font.pointSize + 1).isActive = true
+//        titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font.pointSize + 1).isActive = true
         
         addSubview(userLabel)
         userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
