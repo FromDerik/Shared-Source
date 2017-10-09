@@ -9,12 +9,10 @@
 import UIKit
 import Firebase
 
-class HomeController: UITableViewController, UISearchResultsUpdating {
+class HomeController: UITableViewController {
     
     let cellId = "cellId"
     let headerId = "headerId"
-    
-    var filteredUsers = [String]()
     
     var currentUser = Users()
     var currentUserPosts = [Posts]()
@@ -22,21 +20,12 @@ class HomeController: UITableViewController, UISearchResultsUpdating {
     var allPosts = [Posts]()
     var allUsers = [Users]()
     
-    let resultSearchController: UISearchController = {
-            let controller = UISearchController(searchResultsController: nil)
-            controller.searchResultsUpdater = self as? UISearchResultsUpdating
-            controller.dimsBackgroundDuringPresentation = false
-            controller.searchBar.sizeToFit()
-            return controller
-        }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupNavBar()
         checkIfUserIsLoggedIn()
         
-        tableView.tableHeaderView = resultSearchController.searchBar
         tableView?.backgroundColor = .lighterBlue
         tableView.separatorColor = .darkerBlue
         tableView.separatorInset.left = 0
@@ -46,17 +35,16 @@ class HomeController: UITableViewController, UISearchResultsUpdating {
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
+        let navTitleLabel = UILabel()
+        navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         
-        navigationItem.title = "Home"
-        
+        navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
-        
         
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     func checkIfUserIsLoggedIn() {
@@ -129,7 +117,7 @@ class HomeController: UITableViewController, UISearchResultsUpdating {
     @objc func handleCompose() {
         let composeController = ComposeController()
         let navController = UINavigationController(rootViewController: composeController)
-    	 present(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: nil)
     }
     
     // Table View Cell
@@ -139,26 +127,15 @@ class HomeController: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    	if resultSearchController.isActive {
-            return filteredPosts.count
-        } else {
-            return allPosts.count
-        }
+        return allPosts.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PostCell
-        if resultsSearchController.isActive {
-        	let post = filteredPosts[indexPath.row]
-	        cell.userLabel.text = post.user
-	        cell.titleLabel.text = post.title
-	        cell.postLabel.text = post.post
-        } else {
-	        let post = allPosts[indexPath.row]
-	        cell.userLabel.text = post.user
-	        cell.titleLabel.text = post.title
-	        cell.postLabel.text = post.post
-        }
+        let post = allPosts[indexPath.row]
+        cell.userLabel.text = post.user
+        cell.titleLabel.text = post.title
+        cell.postLabel.text = post.post
         return cell
     }
     
@@ -166,15 +143,4 @@ class HomeController: UITableViewController, UISearchResultsUpdating {
         return UITableViewAutomaticDimension
     }
     
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
-        filteredPosts.removeAll(keepCapacity: false)
-        
-        let searchPredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchController.searchBar.text)
-        let array = (allPosts as NSArray).filteredArrayUsingPredicate(searchPredicate)
-        filteredPosts = array as! [Posts]()
-        
-        self.tableView.reloadData()
-    }
-    
 }
-
