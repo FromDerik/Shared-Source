@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HomeController: UITableViewController {
     
     let cellId = "cellId"
     let headerId = "headerId"
@@ -22,26 +22,33 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupNavBar()
         checkIfUserIsLoggedIn()
         
-        collectionView?.backgroundColor = .darkerBlue
-        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
+        tableView?.backgroundColor = .lighterBlue
+        tableView.separatorColor = .darkerBlue
+        tableView.separatorInset.left = 0
+        tableView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
     }
     
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
+        let searchController = UISearchController(searchResultsController: nil)
         
         navigationItem.title = "Home"
         
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.prefersLargeTitles = true
+        
         
     }
     
@@ -81,7 +88,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.allPosts.insert(post, at:0)
                 
                 DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
+                    self.tableView?.reloadData()
                 }
             }
         }, withCancel: nil)
@@ -120,11 +127,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     // Collection View Cell
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func tableview(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allPosts.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func tableView(_ tableView: UITableView, cellForItemAt indexPath: IndexPath) -> UITableViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
         let post = allPosts[indexPath.row]
         cell.userLabel.text = post.user
