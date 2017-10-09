@@ -98,6 +98,12 @@ class UserProfileController: UITableViewController {
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
+        
+        if let numOfComments = post.numberOfComments {
+            cell.commentsButton.setTitle(String(describing: numOfComments), for: .normal)
+            cell.commentsButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        }
+        
         return cell
     }
     
