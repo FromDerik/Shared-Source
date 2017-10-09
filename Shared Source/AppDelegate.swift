@@ -23,15 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let homeTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
         homeNavController.tabBarItem = homeTab
         
-        let searchController = SearchController()
-        let searchNavController = UINavigationController(rootViewController: searchController)
-        let searchTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "search"), selectedImage: #imageLiteral(resourceName: "search"))
-        searchNavController.tabBarItem = searchTab
-        
         let tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .white
         tabBarController.tabBar.barTintColor = .navBlue
-        tabBarController.viewControllers = [homeNavController, searchNavController]
+        tabBarController.viewControllers = [homeNavController]
         tabBarController.selectedViewController = homeNavController
         
         window = UIWindow(frame: UIScreen.main.bounds)

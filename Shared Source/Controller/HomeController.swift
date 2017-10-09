@@ -14,6 +14,8 @@ class HomeController: UITableViewController {
     let cellId = "cellId"
     let headerId = "headerId"
     
+    var filteredUsers = [String]()
+    
     var currentUser = Users()
     var currentUserPosts = [Posts]()
     
@@ -26,30 +28,35 @@ class HomeController: UITableViewController {
         setupNavBar()
         checkIfUserIsLoggedIn()
         
+        let resultSearchController: UISearchController = {
+            let controller = UISearchController(searchResultsController: nil)
+            controller.searchResultsUpdater = self as? UISearchResultsUpdating
+            controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.sizeToFit()
+            return controller
+        }()
+        
+        tableView.tableHeaderView = resultSearchController.searchBar
         tableView?.backgroundColor = .lighterBlue
         tableView.separatorColor = .darkerBlue
         tableView.separatorInset.left = 0
-        tableView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
+        tableView.register(PostCell.self, forCellReuseIdentifier: cellId)
     }
     
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
-        let searchController = UISearchController(searchResultsController: nil)
         
         navigationItem.title = "Home"
         
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+        
         
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        
     }
     
     func checkIfUserIsLoggedIn() {
@@ -125,39 +132,28 @@ class HomeController: UITableViewController {
     	 present(navController, animated: true, completion: nil)
     }
     
-    // Collection View Cell
+    // Table View Cell
     
-    override func tableview(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allPosts.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForItemAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PostCell
         let post = allPosts[indexPath.row]
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
-        cell.postTextView.text = post.post
+        cell.postLabel.text = post.post
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 150)
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 8
-    }
-    
-    // Collection View Header / Footer
-    
-//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! HeaderCell
-//        return header
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 40)
-//    }
     
 }
 
