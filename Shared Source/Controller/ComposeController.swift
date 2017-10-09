@@ -89,7 +89,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
         postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-//        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
+        postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
     }
     
     @objc func handleComposeButton() {
@@ -107,7 +107,7 @@ class ComposeController: UIViewController, UITextViewDelegate {
                     return
                 }
                 
-                if title.isEmpty || post.isEmpty {
+                if title.isEmpty {
                     return
                 }
                 
