@@ -67,6 +67,8 @@ class UserProfileController: UITableViewController {
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
                 
+                post.numberOfComments = dictionary["numberOfComments"] as? Int
+                
                 // current users posts
                 if post.user == self.currentUser.username {
                     self.currentUsersPosts.insert(post, at:0)
