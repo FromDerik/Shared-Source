@@ -123,17 +123,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let post = posts[indexPath.row]
         
-        if let postText = post.post {
-            print(postText)
+        if let postText = post.post, let postTitle = post.title {
             
-            let approximateWidthOfText = view.frame.width - 12 - 12 - 4
-            let size = CGSize(width: approximateWidthOfText, height: 1000)
+            let approximateWidth = view.frame.width - 12 - 12 - 4
+            let size = CGSize(width: approximateWidth, height: 1000)
             
-            let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+            let titleAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
+            let titleEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
             
-            let estimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+            let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+            let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
             
-            return CGSize(width: view.frame.width, height: estimatedFrame.height + 59)
+            return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
         }
         
         return CGSize(width: view.frame.width, height: 200)
