@@ -18,20 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
-        let homeController = HomeController()
+        let layout = UICollectionViewFlowLayout()
+        let homeController = HomeController(collectionViewLayout: layout)
         let homeNavController = UINavigationController(rootViewController: homeController)
         let homeTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
         homeNavController.tabBarItem = homeTab
         
-        let profileController = UserProfileController()
-        let profileNavController = UINavigationController(rootViewController: profileController)
-        let profileTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "user"), selectedImage: #imageLiteral(resourceName: "user"))
-        profileNavController.tabBarItem = profileTab
-        
         let tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .white
         tabBarController.tabBar.barTintColor = .navBlue
-        tabBarController.viewControllers = [homeNavController, profileNavController]
+        tabBarController.viewControllers = [homeNavController]
         tabBarController.selectedViewController = homeNavController
         
         window = UIWindow(frame: UIScreen.main.bounds)

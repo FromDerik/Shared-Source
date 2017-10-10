@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class HomeController: UITableViewController {
+class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId = "cellId"
     let headerId = "headerId"
@@ -17,8 +17,7 @@ class HomeController: UITableViewController {
     var currentUser = Users()
     var currentUsersPosts = [Posts]()
     
-    var allPosts = [Posts]()
-    var allUsers = [Users]()
+    var posts = [Posts]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +25,8 @@ class HomeController: UITableViewController {
         setupNavBar()
         checkIfUserIsLoggedIn()
         
-        tableView?.backgroundColor = .lighterBlue
-        tableView.separatorColor = .darkerBlue
-        tableView.separatorInset.left = 0
-        tableView.register(HomeCell.self, forCellReuseIdentifier: cellId)
+        collectionView?.backgroundColor = .darkerBlue
+        collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellId)
     }
     
     func setupNavBar() {
@@ -76,36 +73,16 @@ class HomeController: UITableViewController {
                 
                 post.numberOfComments = dictionary["numberOfComments"] as? Int
                 
-                // current users posts
-                if post.user == self.currentUser.username {
-                    self.currentUsersPosts.insert(post, at:0)
-                }
-                
-                // all posts
-                self.allPosts.insert(post, at:0)
+                self.posts.insert(post, at:0)
                 
                 DispatchQueue.main.async {
-                    self.tableView?.reloadData()
+                    self.collectionView?.reloadData()
                 }
-            }
-        }, withCancel: nil)
-    }
-    
-    func fetchUsers() {
-        Database.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String: String] {
-                let user = Users()
-                user.username = dictionary["username"]
-                user.email = dictionary["email"]
-                self.allUsers.append(user)
-                
-                // do stuff with users here
             }
         }, withCancel: nil)
     }
     
     @objc func handleLogout() {
-        
         do {
             try Auth.auth().signOut()
         } catch let logoutError {
@@ -122,19 +99,15 @@ class HomeController: UITableViewController {
         present(navController, animated: true, completion: nil)
     }
     
-    // Table View
+    // Collection View
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return posts.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allPosts.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! HomeCell
-        let post = allPosts[indexPath.row]
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
+        let post = posts[indexPath.row]
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
@@ -147,8 +120,23 @@ class HomeController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let post = posts[indexPath.row]
+        
+        if let postText = post.post {
+            print(postText)
+            
+            let approximateWidthOfText = view.frame.width - 12 - 12 - 4
+            let size = CGSize(width: approximateWidthOfText, height: 1000)
+            
+            let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+            
+            let estimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+            
+            return CGSize(width: view.frame.width, height: estimatedFrame.height + 59)
+        }
+        
+        return CGSize(width: view.frame.width, height: 200)
     }
     
 }

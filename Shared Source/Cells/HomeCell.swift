@@ -8,11 +8,11 @@
 
 import UIKit
 
-class HomeCell: UITableViewCell {
+class HomeCell: UICollectionViewCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = .lighterBlue
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .lighterBlue
         setupButtons()
         setupViews()
     }
@@ -45,7 +45,7 @@ class HomeCell: UITableViewCell {
     
     let postLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .clear
+        label.backgroundColor = .black
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
@@ -70,13 +70,7 @@ class HomeCell: UITableViewCell {
     }()
     
     func setupButtons() {
-        addSubview(buttonsView)
-        buttonsView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        buttonsView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        buttonsView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
-        buttonsView.heightAnchor.constraint(equalToConstant: 16).isActive = true
         
-        buttonsView.addArrangedSubview(commentsButton)
     }
     
     func setupViews() {
@@ -102,7 +96,15 @@ class HomeCell: UITableViewCell {
         postLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         postLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         postLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        postLabel.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -16).isActive = true
+//        postLabel.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -16).isActive = true
+        
+        addSubview(buttonsView)
+        buttonsView.topAnchor.constraint(equalTo: postLabel.topAnchor, constant: 8).isActive = true
+        buttonsView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        buttonsView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        buttonsView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        
+        buttonsView.addArrangedSubview(commentsButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
