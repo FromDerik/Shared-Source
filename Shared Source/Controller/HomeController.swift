@@ -127,7 +127,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         	
         	// HomeCell title / user / post labels width
             let approximateWidth = view.frame.width - 12 - 12 - 4
-            // set a really large size for height 
             let size = CGSize(width: approximateWidth, height: 1000)
             
 			// title font size

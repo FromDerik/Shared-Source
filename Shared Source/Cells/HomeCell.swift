@@ -45,7 +45,7 @@ class HomeCell: UICollectionViewCell {
     
     let postLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .black
+        label.backgroundColor = .clear
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
@@ -78,7 +78,6 @@ class HomeCell: UICollectionViewCell {
         titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-//        titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font.pointSize + 1).isActive = true
         
         addSubview(userLabel)
         userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
@@ -96,10 +95,8 @@ class HomeCell: UICollectionViewCell {
         postLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         postLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         postLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-//        postLabel.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -16).isActive = true
         
         addSubview(buttonsView)
-//        buttonsView.topAnchor.constraint(equalTo: postLabel.topAnchor, constant: 8).isActive = true
         buttonsView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         buttonsView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         buttonsView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
