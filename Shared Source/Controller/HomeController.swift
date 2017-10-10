@@ -124,20 +124,25 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let post = posts[indexPath.row]
         
         if let postText = post.post, let postTitle = post.title {
-
+        	
+        	// HomeCell title / user / post labels width
             let approximateWidth = view.frame.width - 12 - 12 - 4
+            // set a really large size for height 
             let size = CGSize(width: approximateWidth, height: 1000)
-
+            
+			// title font size
             let titleAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
             let titleEstimatedFrame = NSString(string: postTitle).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
-
+			
+			// post font size
             let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
             let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
-
+			
+			// 82 is the remaining heights of views + spacing in the cell
             return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
         }
         
-        return CGSize(width: view.frame.width, height: 200)
+        return CGSize(width: view.frame.width, height: 100)
     }
     
 }
