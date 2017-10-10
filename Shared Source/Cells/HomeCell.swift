@@ -13,7 +13,6 @@ class HomeCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .lighterBlue
-        setupButtons()
         setupViews()
     }
     
@@ -68,10 +67,6 @@ class HomeCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    func setupButtons() {
-        
-    }
     
     func setupViews() {
         addSubview(titleLabel)

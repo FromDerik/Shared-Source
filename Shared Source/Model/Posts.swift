@@ -10,8 +10,8 @@ import UIKit
 
 class Posts: NSObject {
     var user: String?
+    var uid: String?
+    
     var title: String?
     var post: String?
-    
-    var numberOfComments: Int?
 }

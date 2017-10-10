@@ -188,7 +188,7 @@ class LoginController: UIViewController {
     }
     
     func handleRegister() {
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = usernameTextField.text else {
+        guard let email = emailTextField.text, let password = passwordTextField.text, let username = usernameTextField.text else {
             print("Form is not valid")
             return
         }
@@ -206,7 +206,7 @@ class LoginController: UIViewController {
             // Successfully authenticated user
             let ref = Database.database().reference(fromURL: "https://sharedsource-426ef.firebaseio.com/")
             let usersRef = ref.child("users").child(uid)
-            let values = ["username": name, "email": email]
+            let values = ["username": username, "email": email]
             usersRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
                     print(err!)

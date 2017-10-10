@@ -15,8 +15,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let headerId = "headerId"
     
     var currentUser = Users()
-    var currentUsersPosts = [Posts]()
-    
     var posts = [Posts]()
     
     override func viewDidLoad() {
@@ -26,17 +24,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         checkIfUserIsLoggedIn()
         
         collectionView?.backgroundColor = .darkerBlue
+        collectionView?.alwaysBounceVertical = true
         collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellId)
     }
     
     func setupNavBar() {
-//        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
         let navTitleLabel = UILabel()
         navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         
         navigationItem.titleView = navTitleLabel
-//        navigationItem.leftBarButtonItem = logoutButton
+        navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
         
         navigationController?.navigationBar.barTintColor = .navBlue
@@ -55,6 +54,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     let user = Users()
                     user.username = dictionary["username"] as? String
                     user.email = dictionary["email"] as? String
+                    user.uid = snapshot.key
                     self.currentUser = user
                     
                     self.fetchPosts()
@@ -70,8 +70,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 post.user = dictionary["user"] as? String
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
-                
-                post.numberOfComments = dictionary["numberOfComments"] as? Int
                 
                 self.posts.insert(post, at:0)
                 
@@ -94,8 +92,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func handleCompose() {
-        let composeController = ComposeController()
-        let navController = UINavigationController(rootViewController: composeController)
+        let newPostController = NewPostController()
+        newPostController.currentUser = self.currentUser
+        let navController = UINavigationController(rootViewController: newPostController)
         present(navController, animated: true, completion: nil)
     }
     
@@ -108,14 +107,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
         let post = posts[indexPath.row]
+        
         cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
-        
-        if let numOfComments = post.numberOfComments {
-            cell.commentsButton.setTitle(String(describing: numOfComments), for: .normal)
-            cell.commentsButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        }
         
         return cell
     }
@@ -142,6 +137,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         
         return CGSize(width: view.frame.width, height: 100)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let post = posts[indexPath.row]
+        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
+        postController.post = post
+        
+        navigationController?.pushViewController(postController, animated: true)
     }
     
 }

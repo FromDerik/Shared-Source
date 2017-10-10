@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ComposeController: UIViewController, UITextViewDelegate {
+class NewPostController: UIViewController, UITextViewDelegate {
     
     var currentUser = Users()
     
@@ -93,38 +93,26 @@ class ComposeController: UIViewController, UITextViewDelegate {
     }
     
     @objc func handleComposeButton() {
-        
-        guard let uid = Auth.auth().currentUser?.uid else {
+        guard let user = self.currentUser.username, let uid = self.currentUser.uid, let title = self.titleTextField.text, let post = self.postTextView.text else {
             return
         }
         
-        Database.database().reference().child("users").child(uid).observe(.value, with: { (snapshot) in
-            if let dictionary = snapshot.value as? [String: String] {
-                self.currentUser.username = dictionary["username"]
-                self.currentUser.email = dictionary["email"]
-                
-                guard let title = self.titleTextField.text, let post = self.postTextView.text, let user = self.currentUser.username else {
-                    return
-                }
-                
-                if title.isEmpty {
-                    return
-                }
-                
-                let ref = Database.database().reference()
-                let postsRef = ref.child("posts").childByAutoId()
-                let values = ["user": user, "title": title, "post": post, ]
-                
-                postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-                    // Successfully saved the post to the database
-                    self.dismiss(animated: true, completion: nil)
-                })
+        if title.isEmpty {
+            return
+        }
+        
+        let ref = Database.database().reference()
+        let postsRef = ref.child("posts").childByAutoId()
+        let values = ["user": user, "uid": uid, "title": title, "post": post]
+        
+        postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
+            if error != nil {
+                print(error!)
+                return
             }
-        }, withCancel: nil)
+            // Successfully saved the post to the database
+            self.dismiss(animated: true, completion: nil)
+        })
     }
     
     @objc func handleCancelButton() {

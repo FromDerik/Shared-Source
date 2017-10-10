@@ -1,18 +1,23 @@
 //
-//  ProfileHeaderCell.swift
+//  CommentCell.swift
 //  Shared Source
 //
-//  Created by Derik Malcolm on 10/9/17.
+//  Created by Derik Malcolm on 10/10/17.
 //  Copyright © 2017 Derik Malcolm. All rights reserved.
 //
 
 import UIKit
 
-class ProfileHeaderCell: UITableViewCell {
+class CommentCell: UICollectionViewCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         backgroundColor = .lighterBlue
+        setupViews()
+    }
+    
+    func setupViews() {
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
