@@ -99,10 +99,11 @@ class HomeCell: UICollectionViewCell {
 //        postLabel.bottomAnchor.constraint(equalTo: buttonsView.topAnchor, constant: -16).isActive = true
         
         addSubview(buttonsView)
-        buttonsView.topAnchor.constraint(equalTo: postLabel.topAnchor, constant: 8).isActive = true
+//        buttonsView.topAnchor.constraint(equalTo: postLabel.topAnchor, constant: 8).isActive = true
         buttonsView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         buttonsView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         buttonsView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        buttonsView.heightAnchor.constraint(equalToConstant: 16).isActive = true
         
         buttonsView.addArrangedSubview(commentsButton)
     }

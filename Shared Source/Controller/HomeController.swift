@@ -124,16 +124,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let post = posts[indexPath.row]
         
         if let postText = post.post, let postTitle = post.title {
-            
+
             let approximateWidth = view.frame.width - 12 - 12 - 4
             let size = CGSize(width: approximateWidth, height: 1000)
-            
+
             let titleAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
-            let titleEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
-            
+            let titleEstimatedFrame = NSString(string: postTitle).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
+
             let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
             let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
-            
+
             return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
         }
         
