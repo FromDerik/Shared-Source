@@ -37,16 +37,16 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.navigationBar.isTranslucent = false
     }
     
-    func setupInputComponents() {
-        let containerView = UIView()
-        containerView.backgroundColor = .navBlue
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+    func setupInputBar() {
+        let inputbar = InputBar()
+        inputBar.backgroundColor = .navBlue
+        inputBar.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(containerView)
-        containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        view.addSubview(inputBar)
+        inputBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        inputBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        inputBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        inputBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     // Collection View
