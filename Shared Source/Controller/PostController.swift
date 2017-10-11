@@ -64,9 +64,11 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         Database.database().reference().child("comments").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
+                print(dictionary)
                 let comment = Comments()
                 comment.userId = dictionary["userId"] as? String
                 comment.text = dictionary["text"] as? String
+                comment.postId = dictionary["postId"] as? String
                 
                 if comment.postId == uid {
                     self.comments.insert(comment, at: 0)
