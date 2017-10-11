@@ -14,7 +14,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellId"
     let headerId = "headerId"
     
-    var currentUser = Users()
+    var currentUser = Users() {
+        didSet {
+            print("User has be set to: \(currentUser.username!)")
+            navTitleLabel.attributedText = NSAttributedString(string: currentUser.username!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+        }
+    }
     var posts = [Posts]()
     
     let navTitleLabel = UILabel()
@@ -40,7 +45,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
         
-        navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+//        navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         
         navigationItem.titleView = navTitleLabel
         navigationItem.leftBarButtonItem = logoutButton
@@ -152,6 +157,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let post = posts[indexPath.row]
         let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
+        postController.hidesBottomBarWhenPushed = true
         postController.post = post
         postController.currentUser = self.currentUser
         

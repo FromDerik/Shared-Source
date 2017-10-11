@@ -13,13 +13,18 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellId"
     let commentCellId = "commentCellId"
     
-    var currentUser = Users()
+    var currentUser = Users() {
+        didSet {
+            print("User has be set to: \(currentUser.username!)")
+        }
+    }
     
     var post = Posts()
     var comments = [Comments]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupInputComponents()
         
         collectionView?.backgroundColor = .darkerBlue
         collectionView?.alwaysBounceVertical = true
@@ -29,6 +34,18 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.navigationBar.barTintColor = .navBlue
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+    }
+    
+    func setupInputComponents() {
+        let containerView = UIView()
+        containerView.backgroundColor = .navBlue
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(containerView)
+        containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     // Collection View

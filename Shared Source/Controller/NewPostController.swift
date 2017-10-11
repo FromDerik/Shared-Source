@@ -11,7 +11,11 @@ import Firebase
 
 class NewPostController: UIViewController, UITextViewDelegate {
     
-    var currentUser = Users()
+    var currentUser = Users() {
+        didSet {
+            print("User has be set to: \(currentUser.username!)")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
