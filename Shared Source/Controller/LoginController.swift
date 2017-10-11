@@ -11,6 +11,16 @@ import Firebase
 
 class LoginController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .darkerBlue //UIColor(r: 61, g: 91, b: 151)
+        
+        setupInputsContainerView()
+        setupLoginRegisterButton()
+        setupSegmentedControl()
+    }
+    
     let loginSegmentedController: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Login", "Register"])
         sc.selectedSegmentIndex = 0
@@ -79,21 +89,8 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .darkerBlue //UIColor(r: 61, g: 91, b: 151)
-        
-        view.addSubview(loginSegmentedController)
-        view.addSubview(inputsContainerView)
-        view.addSubview(loginRegisterButton)
-        
-        setupInputsContainerView()
-        setupLoginRegisterButton()
-        setupSegmentedControl()
-    }
-    
     func setupSegmentedControl() {
+    	view.addSubview(loginSegmentedController)
         loginSegmentedController.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         loginSegmentedController.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
         loginSegmentedController.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
@@ -107,9 +104,10 @@ class LoginController: UIViewController {
     var passwordTextFieldHeightAnchor: NSLayoutConstraint?
     
     func setupInputsContainerView() {
-        // Container view
-        inputsContainerView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        inputsContainerView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+    	// Container view
+    	view.addSubview(inputsContainerView)
+    	 inputsContainerView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+		inputsContainerView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
         inputsContainerView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -24).isActive = true
         inputsContainerViewHeightAnchor = inputsContainerView.heightAnchor.constraint(equalToConstant: 72)
         inputsContainerViewHeightAnchor?.isActive = true
@@ -155,6 +153,7 @@ class LoginController: UIViewController {
     }
     
     func setupLoginRegisterButton() {
+    	view.addSubview(loginRegisterButton)
         loginRegisterButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         loginRegisterButton.topAnchor.constraint(equalTo: inputsContainerView.bottomAnchor, constant: 12).isActive = true
         loginRegisterButton.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true

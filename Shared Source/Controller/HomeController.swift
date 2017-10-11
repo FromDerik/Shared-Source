@@ -143,6 +143,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let post = posts[indexPath.row]
         let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
         postController.post = post
+        postController.currentUser = self.currentUser
         
         navigationController?.pushViewController(postController, animated: true)
     }

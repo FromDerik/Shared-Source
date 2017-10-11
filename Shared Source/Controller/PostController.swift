@@ -13,8 +13,9 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellId"
     let commentCellId = "commentCellId"
     
-    var post = Posts()
+    var currentUser = Users()
     
+    var post = Posts()
     var comments = [Comments]()
     
     override func viewDidLoad() {
