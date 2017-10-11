@@ -17,21 +17,29 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var currentUser = Users()
     var posts = [Posts]()
     
+    let navTitleLabel = UILabel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupNavBar()
-        checkIfUserIsLoggedIn()
+        fetchPosts()
         
         collectionView?.backgroundColor = .darkerBlue
         collectionView?.alwaysBounceVertical = true
         collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkIfUserIsLoggedIn()
     }
     
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
-        let navTitleLabel = UILabel()
+        
         navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         
         navigationItem.titleView = navTitleLabel
@@ -47,17 +55,19 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if Auth.auth().currentUser == nil {
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         } else {
-            let uid = Auth.auth().currentUser?.uid
-            Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let uid = Auth.auth().currentUser?.uid else {
+                return
+            }
+            Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: Any] {
                     // Do stuff with current users info here
+                    
                     let user = Users()
                     user.username = dictionary["username"] as? String
                     user.email = dictionary["email"] as? String
                     user.uid = snapshot.key
-                    self.currentUser = user
                     
-                    self.fetchPosts()
+                    self.currentUser = user
                 }
             }, withCancel: nil)
         }
@@ -146,6 +156,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         postController.currentUser = self.currentUser
         
         navigationController?.pushViewController(postController, animated: true)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath)
+        view.backgroundColor = .black
+        return view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 50)
     }
     
 }

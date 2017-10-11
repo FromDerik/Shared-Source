@@ -9,8 +9,8 @@
 import UIKit
 
 class Comments: NSObject {
-    var postId: String?
-    var userID: String?
-    var uid: String?
-    var text: String?
+    var postId: String? // The post the comment is for
+    var userId: String? // The user that posted the comment
+    
+    var text: String? // The comments text
 }
