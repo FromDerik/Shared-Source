@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .white
         tabBarController.tabBar.barTintColor = .navBlue
+        tabBarController.tabBar.isTranslucent = false
         tabBarController.viewControllers = [homeNavController]
         tabBarController.selectedViewController = homeNavController
         

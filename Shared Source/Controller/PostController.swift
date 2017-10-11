@@ -16,16 +16,24 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var currentUser = Users() {
         didSet {
-            print("User has be set to: \(currentUser.username!)")
+            print("User has been set to: \(currentUser.uid!)")
         }
     }
     
-    var post = Posts()
+    var currentPost = Posts() {
+        didSet {
+            print("Post has been set to: \(currentPost.uid!)")
+        }
+    }
+    
     var comments = [Comments]()
+    
+    let inputBar = InputBar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupInputComponents()
+        setupInputBar()
+        fetchComments()
         
         collectionView?.backgroundColor = .darkerBlue
         collectionView?.alwaysBounceVertical = true
@@ -38,7 +46,6 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func setupInputBar() {
-        let inputbar = InputBar()
         inputBar.backgroundColor = .navBlue
         inputBar.translatesAutoresizingMaskIntoConstraints = false
         
@@ -47,6 +54,46 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         inputBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         inputBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         inputBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+    }
+    
+    func fetchComments() {
+        guard let uid = currentPost.uid else {
+            return
+        }
+        Database.database().reference().child("comments").observe(.childAdded, with: { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                let comment = Comments()
+                comment.userId = dictionary["userId"] as? String
+                comment.text = dictionary["text"] as? String
+                
+                if comment.postId == uid {
+                    self.comments.insert(comment, at: 0)
+                }
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
+                }
+            }
+        }, withCancel: nil)
+    }
+    
+    @objc func sendComment() {
+        guard let postId = currentPost.uid, let userId = currentUser.uid, let text = inputBar.textField.text else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("comments").childByAutoId()
+        let values = ["postId": postId, "userId": userId, "text": text]
+        ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            if err != nil {
+                print(err!)
+                return
+            }
+            // Successfully saved the user into the database
+//            self.resignFirstResponder()
+        })
     }
     
     // Collection View
@@ -58,9 +105,9 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
-            cell.titleLabel.text = post.title
-            cell.userLabel.text = post.user
-            cell.postLabel.text = post.post
+            cell.titleLabel.text = currentPost.title
+            cell.userLabel.text = currentPost.user
+            cell.postLabel.text = currentPost.post
             return cell
         }
         
@@ -70,7 +117,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {
-            if let postText = post.post, let postTitle = post.title {
+            if let postText = currentPost.post, let postTitle = currentPost.title {
                 
                 // HomeCell title / user / post labels width
                 let approximateWidth = view.frame.width - 12 - 12 - 4

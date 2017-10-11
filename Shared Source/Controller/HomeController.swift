@@ -85,6 +85,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 post.user = dictionary["user"] as? String
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
+                post.uid = snapshot.key
                 
                 self.posts.insert(post, at:0)
                 
@@ -158,7 +159,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let post = posts[indexPath.row]
         let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
         postController.hidesBottomBarWhenPushed = true
-        postController.post = post
+        postController.currentPost = post
         postController.currentUser = self.currentUser
         
         navigationController?.pushViewController(postController, animated: true)
