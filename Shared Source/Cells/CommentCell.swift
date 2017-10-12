@@ -34,7 +34,6 @@ class CommentCell: UICollectionViewCell {
     let timestampLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(white: 0, alpha: 0.5)
-        label.backgroundColor = .black
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
