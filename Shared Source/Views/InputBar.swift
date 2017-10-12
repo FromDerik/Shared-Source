@@ -19,7 +19,7 @@ class InputBar: UIView {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .gray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -27,15 +27,13 @@ class InputBar: UIView {
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Send", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     lazy var textField: UITextField = {
         let textField = UITextField()
-        let attributedText = NSAttributedString(string: "Add a comment", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white: 1, alpha: 0.5)])
-        textField.attributedPlaceholder = attributedText
+        textField.placeholder = "Add a comment"
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()

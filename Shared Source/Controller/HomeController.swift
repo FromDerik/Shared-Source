@@ -14,41 +14,33 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellId"
     let headerId = "headerId"
     
-    var currentUser = Users()
+    var currentUser = Users() {
+        didSet {
+            navigationItem.title = currentUser.username
+        }
+    }
     var posts = [Posts]()
-    
-    let navTitleLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupNavBar()
-        fetchPosts()
+        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
         
-        collectionView?.backgroundColor = .darkerBlue
+        navigationItem.leftBarButtonItem = logoutButton
+        navigationItem.rightBarButtonItem = composeButton
+        
+        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
-        collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        
+        fetchPosts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkIfUserIsLoggedIn()
-    }
-    
-    func setupNavBar() {
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
-        
-//        navTitleLabel.attributedText = NSAttributedString(string: "Home", attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-        
-        navigationItem.titleView = navTitleLabel
-        navigationItem.leftBarButtonItem = logoutButton
-        navigationItem.rightBarButtonItem = composeButton
-        
-        navigationController?.navigationBar.barTintColor = .navBlue
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.isTranslucent = false
     }
     
     func checkIfUserIsLoggedIn() {
@@ -116,7 +108,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
         let post = posts[indexPath.row]
         
         cell.titleLabel.text = post.title
@@ -162,18 +154,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         postController.hidesBottomBarWhenPushed = true
         postController.currentPost = post
         postController.currentUser = self.currentUser
-        
+        navigationItem.title = "Home"
         navigationController?.pushViewController(postController, animated: true)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath)
-        view.backgroundColor = .black
-        return view
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 50)
-    }
+//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath)
+//        view.backgroundColor = .black
+//        return view
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: view.frame.width, height: 50)
+//    }
     
 }

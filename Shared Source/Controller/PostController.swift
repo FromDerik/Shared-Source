@@ -26,19 +26,14 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupInputBar()
         fetchComments()
         
-        collectionView?.backgroundColor = .darkerBlue
+        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
-        
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
-        
-        navigationController?.navigationBar.barTintColor = .navBlue
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.isTranslucent = false
     }
     
     func setupInputBar() {
-        inputBar.backgroundColor = .navBlue
+        inputBar.backgroundColor = .white
         inputBar.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(inputBar)
@@ -61,7 +56,6 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 comment.userId = dictionary["userId"] as? String
                 comment.text = dictionary["text"] as? String
                 comment.postId = dictionary["postId"] as? String
-                print(comment.text!)
                 
                 if comment.postId == postId {
                     self.comments.insert(comment, at: 0)
@@ -168,16 +162,5 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         sendComment()
         return true
     }
-    
-//    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 2
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        if section == 0 {
-//            return CGSize(width: view.frame.width, height: 0)
-//        }
-//        return CGSize(width: view.frame.width, height: 50)
-//    }
     
 }

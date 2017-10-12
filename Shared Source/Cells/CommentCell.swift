@@ -38,7 +38,6 @@ class CommentCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
-        label.backgroundColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -59,7 +58,7 @@ class CommentCell: UICollectionViewCell {
         addSubview(textLabel)
         textLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         textLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        textLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
+        textLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
 //        textLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 16).isActive = true
     }
     
