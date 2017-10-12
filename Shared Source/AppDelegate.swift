@@ -25,15 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         homeNavController.tabBarItem = homeTab
         
         let tabBarController = UITabBarController()
-        tabBarController.tabBar.tintColor = .white
-        tabBarController.tabBar.barTintColor = .navBlue
-        tabBarController.tabBar.isTranslucent = false
         tabBarController.viewControllers = [homeNavController]
         tabBarController.selectedViewController = homeNavController
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = tabBarController
+        window?.rootViewController = UINavigationController(rootViewController: homeController) //tabBarController
         
         return true
     }

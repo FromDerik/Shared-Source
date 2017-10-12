@@ -14,4 +14,5 @@ class Posts: NSObject {
     var postId: String? // Unique id of the post
     var title: String? // Title of the post
     var post: String? // Text of the post
+    var timestamp: NSNumber?
 }

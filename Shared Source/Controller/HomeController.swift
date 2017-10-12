@@ -35,7 +35,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
         
-        fetchPosts()
+        observePosts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,14 +65,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    func fetchPosts() {
+    func observePosts() {
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 let post = Posts()
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
                 post.userId = dictionary["userId"] as? String
+                post.timestamp = dictionary["timestamp"] as? NSNumber
                 post.postId = snapshot.key
+                
                 
                 self.posts.insert(post, at:0)
                 
@@ -114,10 +116,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
         
-        let userId = post.userId
-        Database.database().reference().child("users").child(userId!).observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String: Any] {
-                cell.userLabel.text = dictionary["username"] as? String
+        if let seconds = post.timestamp?.doubleValue {
+            let timestampDate = NSDate(timeIntervalSince1970: seconds)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm a"
+            
+            cell.timestampLabel.text = "• \(dateFormatter.string(from: timestampDate as Date))"
+        }
+        
+        if let userId = post.userId {
+            Database.database().reference().child("users").child(userId).observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    cell.userLabel.text = dictionary["username"] as? String
+                }
             }
         }
         

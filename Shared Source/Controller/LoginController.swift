@@ -14,7 +14,7 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .darkerBlue //UIColor(r: 61, g: 91, b: 151)
+        view.backgroundColor = .white //UIColor(r: 61, g: 91, b: 151)
         
         setupInputsContainerView()
         setupLoginRegisterButton()
@@ -23,16 +23,17 @@ class LoginController: UIViewController {
     
     let loginSegmentedController: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Login", "Register"])
+        sc.tintColor = .blue
         sc.selectedSegmentIndex = 0
         sc.addTarget(self, action: #selector(handleSegmentChange), for: .valueChanged)
-        sc.tintColor = .white
         sc.translatesAutoresizingMaskIntoConstraints = false
         return sc
     }()
     
     let inputsContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.layer.borderColor = UIColor.blue.cgColor
+        view.layer.borderWidth = 0.5
         view.layer.cornerRadius = 5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +42,7 @@ class LoginController: UIViewController {
     
     let loginRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .lighterBlue //UIColor(r: 79, g: 101, b: 161)
+        button.backgroundColor = .blue //UIColor(r: 79, g: 101, b: 161)
         button.setTitle("Login", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -61,7 +62,7 @@ class LoginController: UIViewController {
     
     let usernameSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = .blue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -76,7 +77,7 @@ class LoginController: UIViewController {
     
     let emailSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = .blue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -141,7 +142,7 @@ class LoginController: UIViewController {
         emailSeparatorView.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
         emailSeparatorView.leadingAnchor.constraint(equalTo: inputsContainerView.leadingAnchor).isActive = true
         emailSeparatorView.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        emailSeparatorView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         // Password text field
         inputsContainerView.addSubview(passwordTextField)
@@ -227,7 +228,7 @@ class LoginController: UIViewController {
         usernameTextFieldHeightAnchor = usernameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginSegmentedController.selectedSegmentIndex == 0 ? 0 : 1/3)
         usernameTextFieldHeightAnchor?.isActive = true
         
-        usernameSeparatorHeightAnchor?.constant = loginSegmentedController.selectedSegmentIndex == 0 ? 0 : 1
+        usernameSeparatorHeightAnchor?.constant = loginSegmentedController.selectedSegmentIndex == 0 ? 0 : 0.5
         
         emailTextFieldHeightAnchor?.isActive = false
         emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginSegmentedController.selectedSegmentIndex == 0 ? 1/2 : 1/3)

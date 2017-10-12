@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class NewPostController: UIViewController, UITextViewDelegate {
+class NewPostController: UIViewController, UITextFieldDelegate {
     
     var currentUser = Users()
     
@@ -18,43 +18,33 @@ class NewPostController: UIViewController, UITextViewDelegate {
         setupViews()
         setupNavBar()
         
-        view.backgroundColor = .lighterBlue
+        view.backgroundColor = .white
         
+        titleTextField.delegate = self
         titleTextField.becomeFirstResponder()
     }
     
     func setupNavBar() {
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
-        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleComposeButton))
+        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(sendPost))
         
-        let navTitleLabel = UILabel()
-        navTitleLabel.text = "Create new post"
-        navTitleLabel.font = UIFont.boldSystemFont(ofSize: 17)
-        navTitleLabel.textColor = .white
-        
-        navigationItem.titleView = navTitleLabel
+        navigationItem.title = "Create new post"
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = composeButton
-        navigationController?.navigationBar.barTintColor = .navBlue
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.isTranslucent = false
     }
     
     let titleTextField: UITextField = {
         let title = UITextField()
-        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:1, alpha:0.5)])
-        title.textColor = .white
+        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:0, alpha:0.5)])
+        title.textColor = .black
         title.font = UIFont.systemFont(ofSize: 14)
-//        title.sizeToFit()
-//        title.adjustsFontSizeToFitWidth = true
-//        title.minimumFontSize = 8
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .darkerBlue
+        view.backgroundColor = .gray
         view.layer.cornerRadius = 0.5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +55,7 @@ class NewPostController: UIViewController, UITextViewDelegate {
         let tv = UITextView()
         tv.backgroundColor = .clear
         tv.font = UIFont.systemFont(ofSize: 12)
-        tv.textColor = .white
+        tv.textColor = .black
         tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
@@ -80,19 +70,19 @@ class NewPostController: UIViewController, UITextViewDelegate {
         titleTextField.heightAnchor.constraint(equalToConstant: (titleTextField.font?.pointSize)! + 2).isActive = true
         
         view.addSubview(separator)
-        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 8).isActive = true
-        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        separator.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 16).isActive = true
+        separator.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        separator.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         view.addSubview(postTextView)
-        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
+        postTextView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 16).isActive = true
         postTextView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         postTextView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         postTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
     }
     
-    @objc func handleComposeButton() {
+    @objc func sendPost() {
         guard let userId = self.currentUser.uid, let title = self.titleTextField.text, let post = self.postTextView.text else {
             return
         }
@@ -103,7 +93,9 @@ class NewPostController: UIViewController, UITextViewDelegate {
         
         let ref = Database.database().reference()
         let postsRef = ref.child("posts").childByAutoId()
-        let values = ["userId": userId, "title": title, "post": post] as [String : Any]
+        let timestampAsInt = (Int(NSDate().timeIntervalSince1970))
+        let timestamp: NSNumber = NSNumber.init(value: timestampAsInt)
+        let values = ["userId": userId, "title": title, "post": post, "timestamp": timestamp] as [String : Any]
         
         postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
             if error != nil {
@@ -117,6 +109,11 @@ class NewPostController: UIViewController, UITextViewDelegate {
     
     @objc func handleCancelButton() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        sendPost()
+        return true
     }
 }
 

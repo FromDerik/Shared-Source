@@ -25,7 +25,7 @@ class PostCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -49,10 +49,18 @@ class PostCell: UICollectionViewCell {
         return label
     }()
     
+    let timestampLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(white: 0, alpha: 0.5)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     let postLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .clear
-        label.numberOfLines = 4
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = UIColor(white: 0, alpha: 0.75)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -95,8 +103,12 @@ class PostCell: UICollectionViewCell {
         addSubview(userLabel)
         userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
         userLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        userLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         userLabel.heightAnchor.constraint(equalToConstant: userLabel.font.pointSize + 1).isActive = true
+        
+        addSubview(timestampLabel)
+        timestampLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
+        timestampLabel.leadingAnchor.constraint(equalTo: userLabel.trailingAnchor, constant: 4).isActive = true
+        timestampLabel.heightAnchor.constraint(equalToConstant: timestampLabel.font.pointSize + 1).isActive = true
         
         addSubview(separator)
         separator.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8).isActive = true
@@ -118,10 +130,10 @@ class PostCell: UICollectionViewCell {
         buttonsView.addArrangedSubview(commentsButton)
         
         addSubview(bottomSeparator)
-        bottomSeparator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -0.5).isActive = true
+        bottomSeparator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
         bottomSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         bottomSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        topSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        bottomSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

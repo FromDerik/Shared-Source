@@ -35,6 +35,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func setupInputBar() {
         inputBar.backgroundColor = .white
         inputBar.translatesAutoresizingMaskIntoConstraints = false
+        inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+        inputBar.textField.delegate = self
         
         view.addSubview(inputBar)
         inputBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -42,8 +44,15 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         inputBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         inputBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
-        inputBar.textField.delegate = self
+        let xView = UIView()
+        xView.backgroundColor = .white
+        xView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(xView)
+        xView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        xView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        xView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        xView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     func fetchComments() {
@@ -74,7 +83,9 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         
         let ref = Database.database().reference().child("comments").childByAutoId()
-        let values = ["postId": postId, "userId": userId, "text": text]
+        let timestampAsInt = (Int(NSDate().timeIntervalSince1970))
+        let timestamp: NSNumber = NSNumber.init(value: timestampAsInt)
+        let values = ["postId": postId, "userId": userId, "text": text, "timestamp": timestamp] as [String : Any]
         ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
             if err != nil {
                 print(err!)
@@ -82,6 +93,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
             // Successfully saved the comment into the database
             self.inputBar.textField.resignFirstResponder()
+            self.inputBar.textField.text = nil
         })
     }
     
@@ -97,6 +109,15 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             cell.titleLabel.text = currentPost.title
             cell.postLabel.text = currentPost.post
             
+            if let seconds = currentPost.timestamp?.doubleValue {
+                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "hh:mm a"
+                
+                cell.timestampLabel.text = "• \(dateFormatter.string(from: timestampDate as Date))"
+            }
+            
             let userId = currentPost.userId
             Database.database().reference().child("users").child(userId!).observeSingleEvent(of: .value) { (snapshot) in
                 if let dictionary = snapshot.value as? [String: Any] {
@@ -110,11 +131,21 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentCellId, for: indexPath) as! CommentCell
         let comment = comments[indexPath.row - 1]
         
-        let uid = comment.userId
-        Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value) { (snapshot) in
-            if let dictionary = snapshot.value as? [String: Any] {
-                cell.userLabel.text = dictionary["username"] as? String
-                cell.textLabel.text = comment.text
+        if let uid = comment.userId {
+            Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    cell.userLabel.text = dictionary["username"] as? String
+                    cell.textLabel.text = comment.text
+                    
+                    if let seconds = comment.timestamp?.doubleValue {
+                        let timestampDate = NSDate(timeIntervalSince1970: seconds)
+                        
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "hh:mm a"
+                        
+                        cell.timestampLabel.text = "• \(dateFormatter.string(from: timestampDate as Date))"
+                    }
+                }
             }
         }
         
@@ -144,15 +175,17 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let comment = comments[indexPath.row - 1]
         if let commentText = comment.text {
+            
+            // CommentCell comment width
             let approximateWidth = view.frame.width - 12 - 12 - 4
             let size = CGSize(width: approximateWidth, height: 1000)
             
-            // post font size
+            // comment font size
             let commentAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
             let commentEstimatedFrame = NSString(string: commentText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: commentAttributes, context: nil)
             
-            // 82 is the remaining heights of views + spacing in the cell
-            return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 62)
+            // 46 is the remaining heights of views + spacing in the cell
+            return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 46)
         }
         
         return CGSize(width: view.frame.width, height: 100)
