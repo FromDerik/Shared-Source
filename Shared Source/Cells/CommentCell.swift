@@ -58,9 +58,9 @@ class CommentCell: UICollectionViewCell {
         
         addSubview(textLabel)
         textLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
-        textLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
+        textLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         textLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
-        textLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 16).isActive = true
+//        textLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 16).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
