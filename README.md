@@ -9,7 +9,6 @@ An app to ask development questions or post bits of code for others to check out
   'Firebase/Core'
   'Firebase/Database'
   'Firebase/Auth'
-  'Firebase/Storage'
 5. Save podfile
 6. "pod install"
 7. Open .xcworkspace and compile
