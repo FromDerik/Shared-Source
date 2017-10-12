@@ -65,6 +65,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 comment.userId = dictionary["userId"] as? String
                 comment.text = dictionary["text"] as? String
                 comment.postId = dictionary["postId"] as? String
+                comment.timest
                 
                 if comment.postId == postId {
                     self.comments.insert(comment, at: 0)
