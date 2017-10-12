@@ -11,11 +11,7 @@ import Firebase
 
 class NewPostController: UIViewController, UITextViewDelegate {
     
-    var currentUser = Users() {
-        didSet {
-            print("User has be set to: \(currentUser.username!)")
-        }
-    }
+    var currentUser = Users()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,7 +93,7 @@ class NewPostController: UIViewController, UITextViewDelegate {
     }
     
     @objc func handleComposeButton() {
-        guard let user = self.currentUser.username, let uid = self.currentUser.uid, let title = self.titleTextField.text, let post = self.postTextView.text else {
+        guard let userId = self.currentUser.uid, let title = self.titleTextField.text, let post = self.postTextView.text else {
             return
         }
         
@@ -107,7 +103,7 @@ class NewPostController: UIViewController, UITextViewDelegate {
         
         let ref = Database.database().reference()
         let postsRef = ref.child("posts").childByAutoId()
-        let values = ["user": user, "uid": uid, "title": title, "post": post]
+        let values = ["userId": userId, "title": title, "post": post] as [String : Any]
         
         postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
             if error != nil {

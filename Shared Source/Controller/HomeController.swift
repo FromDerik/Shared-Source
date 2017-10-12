@@ -14,12 +14,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let cellId = "cellId"
     let headerId = "headerId"
     
-    var currentUser = Users() {
-        didSet {
-            print("User has be set to: \(currentUser.username!)")
-            navTitleLabel.attributedText = NSAttributedString(string: currentUser.username!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-        }
-    }
+    var currentUser = Users()
     var posts = [Posts]()
     
     let navTitleLabel = UILabel()
@@ -82,10 +77,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 let post = Posts()
-                post.user = dictionary["user"] as? String
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
-                post.uid = snapshot.key
+                post.userId = dictionary["userId"] as? String
+                post.postId = snapshot.key
                 
                 self.posts.insert(post, at:0)
                 
@@ -124,9 +119,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
         let post = posts[indexPath.row]
         
-        cell.userLabel.text = post.user
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
+        
+        let userId = post.userId
+        Database.database().reference().child("users").child(userId!).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                cell.userLabel.text = dictionary["username"] as? String
+            }
+        }
         
         return cell
     }

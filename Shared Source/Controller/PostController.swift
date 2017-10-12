@@ -9,22 +9,13 @@
 import UIKit
 import Firebase
 
-class PostController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class PostController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     let cellId = "cellId"
     let commentCellId = "commentCellId"
     
-    var currentUser = Users() {
-        didSet {
-            print("User has been set to: \(currentUser.uid!)")
-        }
-    }
-    
-    var currentPost = Posts() {
-        didSet {
-            print("Post has been set to: \(currentPost.uid!)")
-        }
-    }
+    var currentUser = Users()
+    var currentPost = Posts()
     
     var comments = [Comments]()
     
@@ -37,7 +28,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView?.backgroundColor = .darkerBlue
         collectionView?.alwaysBounceVertical = true
-        collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellId)
+        
+        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
         
         navigationController?.navigationBar.barTintColor = .navBlue
@@ -56,21 +48,22 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         inputBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+        inputBar.textField.delegate = self
     }
     
     func fetchComments() {
-        guard let uid = currentPost.uid else {
+        guard let postId = currentPost.postId else {
             return
         }
         Database.database().reference().child("comments").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
-                print(dictionary)
                 let comment = Comments()
                 comment.userId = dictionary["userId"] as? String
                 comment.text = dictionary["text"] as? String
                 comment.postId = dictionary["postId"] as? String
+                print(comment.text!)
                 
-                if comment.postId == uid {
+                if comment.postId == postId {
                     self.comments.insert(comment, at: 0)
                 }
                 
@@ -82,7 +75,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func sendComment() {
-        guard let postId = currentPost.uid, let userId = currentUser.uid, let text = inputBar.textField.text else {
+        guard let postId = currentPost.postId, let userId = currentUser.uid, let text = inputBar.textField.text else {
             return
         }
         
@@ -93,8 +86,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 print(err!)
                 return
             }
-            // Successfully saved the user into the database
-//            self.resignFirstResponder()
+            // Successfully saved the comment into the database
+            self.inputBar.textField.resignFirstResponder()
         })
     }
     
@@ -106,14 +99,31 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomeCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
             cell.titleLabel.text = currentPost.title
-            cell.userLabel.text = currentPost.user
             cell.postLabel.text = currentPost.post
+            
+            let userId = currentPost.userId
+            Database.database().reference().child("users").child(userId!).observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    cell.userLabel.text = dictionary["username"] as? String
+                }
+            }
+            
             return cell
         }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentCellId, for: indexPath) as! CommentCell
+        let comment = comments[indexPath.row - 1]
+        
+        let uid = comment.userId
+        Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                cell.userLabel.text = dictionary["username"] as? String
+                cell.textLabel.text = comment.text
+            }
+        }
+        
         return cell
     }
     
@@ -138,8 +148,25 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             }
         }
         
+        let comment = comments[indexPath.row - 1]
+        if let commentText = comment.text {
+            let approximateWidth = view.frame.width - 12 - 12 - 4
+            let size = CGSize(width: approximateWidth, height: 1000)
+            
+            // post font size
+            let commentAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+            let commentEstimatedFrame = NSString(string: commentText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: commentAttributes, context: nil)
+            
+            // 82 is the remaining heights of views + spacing in the cell
+            return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 62)
+        }
         
-        return CGSize(width: view.frame.width, height: 50)
+        return CGSize(width: view.frame.width, height: 100)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        sendComment()
+        return true
     }
     
 //    override func numberOfSections(in collectionView: UICollectionView) -> Int {

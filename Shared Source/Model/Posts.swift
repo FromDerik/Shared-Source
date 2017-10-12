@@ -9,9 +9,9 @@
 import UIKit
 
 class Posts: NSObject {
-    var user: String?
-    var uid: String?
+    var userId: String? // Unique id for the user that created the post
     
-    var title: String?
-    var post: String?
+    var postId: String? // Unique id of the post
+    var title: String? // Title of the post
+    var post: String? // Text of the post
 }

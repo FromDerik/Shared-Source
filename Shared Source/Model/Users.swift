@@ -9,7 +9,7 @@
 import UIKit
 
 class Users: NSObject {
-    var uid: String?
-    var username: String?
-    var email: String?
+    var uid: String? // Users unique ID provided by firebase Auth
+    var username: String? // Users username
+    var email: String? // Users email
 }

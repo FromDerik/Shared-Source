@@ -32,7 +32,7 @@ class InputBar: UIView {
         return button
     }()
     
-    let textField: UITextField = {
+    lazy var textField: UITextField = {
         let textField = UITextField()
         let attributedText = NSAttributedString(string: "Add a comment", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white: 1, alpha: 0.5)])
         textField.attributedPlaceholder = attributedText

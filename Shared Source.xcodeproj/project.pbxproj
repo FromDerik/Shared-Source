@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F2DEE441F8288E000284444 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F2DEE431F8288B200284444 /* GoogleService-Info.plist */; };
+		2F2E9F761F8F31D1000675BD /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2E9F751F8F31D1000675BD /* PostCell.swift */; };
 		2F3491261F8D195E00A6799C /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491251F8D195E00A6799C /* PostController.swift */; };
 		2F3491281F8D209B00A6799C /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491271F8D209B00A6799C /* Comments.swift */; };
 		2F34912A1F8D2A0900A6799C /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491291F8D2A0900A6799C /* CommentCell.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		0BCBDB5235ED88D7D4F99516 /* Pods_Shared_Source.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shared_Source.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F2DEE431F8288B200284444 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2F2E9F751F8F31D1000675BD /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		2F3491251F8D195E00A6799C /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
 		2F3491271F8D209B00A6799C /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		2F3491291F8D2A0900A6799C /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			children = (
 				2FFD951A1F827599002C7AB1 /* HomeCell.swift */,
 				2F3491291F8D2A0900A6799C /* CommentCell.swift */,
+				2F2E9F751F8F31D1000675BD /* PostCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 			files = (
 				2FFD95251F82787A002C7AB1 /* Extensions.swift in Sources */,
 				2F3491281F8D209B00A6799C /* Comments.swift in Sources */,
+				2F2E9F761F8F31D1000675BD /* PostCell.swift in Sources */,
 				2FFD95141F8274CA002C7AB1 /* Users.swift in Sources */,
 				2F34912A1F8D2A0900A6799C /* CommentCell.swift in Sources */,
 				2FFD951E1F8275F5002C7AB1 /* HomeController.swift in Sources */,

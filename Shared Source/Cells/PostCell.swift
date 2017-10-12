@@ -2,13 +2,13 @@
 //  PostCell.swift
 //  Shared Source
 //
-//  Created by Derik Malcolm on 10/2/17.
+//  Created by Derik Malcolm on 10/12/17.
 //  Copyright © 2017 Derik Malcolm. All rights reserved.
 //
 
 import UIKit
 
-class HomeCell: UICollectionViewCell {
+class PostCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,7 +18,7 @@ class HomeCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +45,7 @@ class HomeCell: UICollectionViewCell {
     let postLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .clear
-        label.numberOfLines = 4
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -103,4 +103,5 @@ class HomeCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }
