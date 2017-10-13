@@ -21,11 +21,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     var posts = [Posts]()
     
+    var refresher: UIRefreshControl?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         setupNavBar()
         observePosts()
+        setupRefresherView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,6 +47,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+    }
+    
+    func setupRefresherView() {
+        refresher = UIRefreshControl()
+        self.refresher?.addTarget(self, action: #selector(observePosts), for: .valueChanged)
+        collectionView?.refreshControl = refresher
     }
     
     func setupNavBar() {
@@ -76,7 +85,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    func observePosts() {
+    @objc func observePosts() {
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 let post = Posts()
@@ -92,6 +101,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 DispatchQueue.main.async {
                     self.collectionView?.reloadData()
                 }
+                self.refresher?.endRefreshing()
             }
         }, withCancel: nil)
     }
