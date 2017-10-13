@@ -26,7 +26,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupInputBar()
         fetchComments()
         
-//        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -50)
+        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
