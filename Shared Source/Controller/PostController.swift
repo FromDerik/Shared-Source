@@ -213,6 +213,10 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             inputBar.sendButton.isEnabled = true
         }
         
+        if value.distance(from: value.startIndex, to: value.endIndex) == 0 {
+            inputBar.sendButton.isEnabled = true
+        }
+        
         return true
     }
     
