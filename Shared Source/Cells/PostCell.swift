@@ -43,7 +43,7 @@ class PostCell: UICollectionViewCell {
     
     let userLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(white: 0, alpha: 0.5)
+        label.textColor = UIColor(white: 0, alpha: 0.75)
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
