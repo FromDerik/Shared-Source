@@ -25,6 +25,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         setupInputBar()
         fetchComments()
+        setupKeyboardObserver()
         
         collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
@@ -33,6 +34,24 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
     }
+    
+    func setupKeyboardObserver() {
+    	NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+    	
+    	NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func handleKeyboardWillShow(notification: NSNotification) {
+    	let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey].cgRectValue
+    	
+    	inputBarBottomAnchor?.constant = -keyboardFrame!.height
+    }
+    
+    func handleKeyboardWillShow(notification: NSNotification) {
+    	inputBarBottomAnchor?.constant = 0
+    }
+    
+    var inputBarBottomAnchor: NSLayoutConstraint?
     
     func setupInputBar() {
         inputBar.backgroundColor = .white
@@ -43,7 +62,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         view.addSubview(inputBar)
         inputBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         inputBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        inputBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        inputBarBottomAnchor = inputBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        inputBarBottomAnchor?.isActive = true
         inputBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         let xView = UIView()
