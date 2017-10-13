@@ -19,65 +19,44 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var comments = [Comments]()
     
-    let inputBar = InputBar()
+    lazy var inputBar: InputBar = {
+        let inputBar = InputBar()
+        inputBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        inputBar.backgroundColor = .white
+        inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+        inputBar.textField.layer.cornerRadius = (inputBar.frame.height * 0.75) / 2
+        inputBar.textField.delegate = self
+        return inputBar
+    }()
+    
+    override var inputAccessoryView: UIView? {
+        get {
+            return inputBar
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool { return true }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupInputBar()
-        fetchComments()
-        setupKeyboardObserver()
-        
-        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        setupCollectionView()
+        observeComments()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    func setupCollectionView() {
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
+        collectionView?.keyboardDismissMode = .interactive
+        
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
     }
     
-    func setupKeyboardObserver() {
-    	NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-    	
-    	NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    func handleKeyboardWillShow(notification: NSNotification) {
-    	let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey].cgRectValue
-    	
-    	inputBarBottomAnchor?.constant = -keyboardFrame!.height
-    }
-    
-    func handleKeyboardWillShow(notification: NSNotification) {
-    	inputBarBottomAnchor?.constant = 0
-    }
-    
-    var inputBarBottomAnchor: NSLayoutConstraint?
-    
-    func setupInputBar() {
-        inputBar.backgroundColor = .white
-        inputBar.translatesAutoresizingMaskIntoConstraints = false
-        inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
-        inputBar.textField.delegate = self
-        
-        view.addSubview(inputBar)
-        inputBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        inputBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        inputBarBottomAnchor = inputBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        inputBarBottomAnchor?.isActive = true
-        inputBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        let xView = UIView()
-        xView.backgroundColor = .white
-        xView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(xView)
-        xView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        xView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        xView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        xView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    func fetchComments() {
+    func observeComments() {
         guard let postId = currentPost.postId else {
             return
         }
@@ -105,6 +84,10 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             return
         }
         
+        if text.isEmpty {
+            return
+        }
+        
         let ref = Database.database().reference().child("comments").childByAutoId()
         let timestampAsInt = (Int(NSDate().timeIntervalSince1970))
         let timestamp: NSNumber = NSNumber.init(value: timestampAsInt)
@@ -115,12 +98,13 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 return
             }
             // Successfully saved the comment into the database
-            self.inputBar.textField.resignFirstResponder()
-            self.inputBar.textField.text = nil
         })
+        
+        inputBar.textField.text = nil
+        inputBar.sendButton.isEnabled = false
     }
     
-    // Collection View
+    // CollectionView Delegate
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return comments.count + 1
@@ -194,28 +178,41 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 // 82 is the remaining heights of views + spacing in the cell
                 return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
             }
-        }
-        
-        let comment = comments[indexPath.row - 1]
-        if let commentText = comment.text {
+        } else {
             
-            // CommentCell comment width
-            let approximateWidth = view.frame.width - 12 - 12 - 4
-            let size = CGSize(width: approximateWidth, height: 1000)
-            
-            // comment font size
-            let commentAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
-            let commentEstimatedFrame = NSString(string: commentText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: commentAttributes, context: nil)
-            
-            // 46 is the remaining heights of views + spacing in the cell
-            return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 46)
+            let comment = comments[indexPath.row - 1]
+            if let commentText = comment.text {
+                
+                // CommentCell comment width
+                let approximateWidth = view.frame.width - 12 - 12 - 4
+                let size = CGSize(width: approximateWidth, height: 1000)
+                
+                // comment font size
+                let commentAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+                let commentEstimatedFrame = NSString(string: commentText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: commentAttributes, context: nil)
+                
+                // 46 is the remaining heights of views + spacing in the cell
+                return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 46)
+            }
         }
         
         return CGSize(width: view.frame.width, height: 100)
     }
     
+    // TextField Delegate
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendComment()
+        return false
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let value = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
+        
+        if value.distance(from: value.startIndex, to: value.endIndex) > 0 {
+            inputBar.sendButton.isEnabled = true
+        }
+        
         return true
     }
     

@@ -18,7 +18,7 @@ class PostCell: UICollectionViewCell {
     
     let topSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -34,7 +34,7 @@ class PostCell: UICollectionViewCell {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
         view.layer.cornerRadius = 0.5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -83,7 +83,7 @@ class PostCell: UICollectionViewCell {
     
     let bottomSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

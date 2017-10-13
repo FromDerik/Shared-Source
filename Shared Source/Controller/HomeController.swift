@@ -23,24 +23,35 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
-        
-        navigationItem.leftBarButtonItem = logoutButton
-        navigationItem.rightBarButtonItem = composeButton
-        
-        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
-        collectionView?.alwaysBounceVertical = true
-        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
-        
+        setupCollectionView()
+        setupNavBar()
         observePosts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkIfUserIsLoggedIn()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    func setupCollectionView() {
+        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.refreshControl?.isEnabled = true
+        
+        collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+    }
+    
+    func setupNavBar() {
+        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
+        
+        navigationItem.leftBarButtonItem = logoutButton
+        navigationItem.rightBarButtonItem = composeButton
     }
     
     func checkIfUserIsLoggedIn() {

@@ -18,7 +18,7 @@ class CommentCell: UICollectionViewCell {
     
     let topSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -41,7 +41,7 @@ class CommentCell: UICollectionViewCell {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
         view.layer.cornerRadius = 0.5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +59,7 @@ class CommentCell: UICollectionViewCell {
     
     let bottomSeparator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = .lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

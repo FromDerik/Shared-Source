@@ -27,13 +27,17 @@ class InputBar: UIView {
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Send", for: .normal)
+        button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    lazy var textField: UITextField = {
-        let textField = UITextField()
+    lazy var textField: TextField = {
+        let textField = TextField()
         textField.placeholder = "Add a comment"
+        textField.layer.borderWidth = 0.75
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.masksToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -47,15 +51,15 @@ class InputBar: UIView {
         
         addSubview(sendButton)
         sendButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        sendButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        sendButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        sendButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         addSubview(textField)
-        textField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        textField.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
         textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        textField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor).isActive = true
-        textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        textField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -4).isActive = true
+        textField.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.75).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
