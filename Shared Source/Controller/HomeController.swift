@@ -28,7 +28,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupCollectionView()
         setupNavBar()
         observePosts()
-        setupRefresherView()
+//        setupRefresherView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -49,11 +49,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
     
-    func setupRefresherView() {
-        refresher = UIRefreshControl()
-        self.refresher?.addTarget(self, action: #selector(observePosts), for: .valueChanged)
-        collectionView?.refreshControl = refresher
-    }
+//    func setupRefresherView() {
+//        refresher = UIRefreshControl()
+//        self.refresher?.addTarget(self, action: #selector(observePosts), for: .allEvents)
+//        collectionView?.refreshControl = refresher
+//    }
     
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -85,8 +85,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    var timer: Timer?
+    
     @objc func observePosts() {
-    	posts.removeAll()
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 let post = Posts()
@@ -96,15 +97,19 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 post.timestamp = dictionary["timestamp"] as? NSNumber
                 post.postId = snapshot.key
                 
-                
                 self.posts.insert(post, at:0)
                 
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
-                self.refresher?.endRefreshing()
+                self.timer?.invalidate()
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadData), userInfo: nil, repeats: false)
             }
         }, withCancel: nil)
+    }
+    
+    @objc func reloadData() {
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
+        }
+//        self.refresher?.endRefreshing()
     }
     
     @objc func handleLogout() {

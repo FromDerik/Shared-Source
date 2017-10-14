@@ -19,6 +19,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var comments = [Comments]()
     
+    var refresher: UIRefreshControl?
+    
     lazy var inputBar: InputBar = {
         let inputBar = InputBar()
         inputBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
@@ -41,6 +43,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         setupCollectionView()
         observeComments()
+//        setupRefresherView()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -56,7 +59,15 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
     }
     
-    func observeComments() {
+//    func setupRefresherView() {
+//        refresher = UIRefreshControl()
+//        self.refresher?.addTarget(self, action: #selector(observeComments), for: .allEvents)
+//        collectionView?.refreshControl = refresher
+//    }
+    
+    var timer: Timer?
+    
+    @objc func observeComments() {
         guard let postId = currentPost.postId else {
             return
         }
@@ -72,11 +83,18 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                     self.comments.insert(comment, at: 0)
                 }
                 
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
+                self.timer?.invalidate()
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadData), userInfo: nil, repeats: false)
+                
             }
         }, withCancel: nil)
+    }
+    
+    @objc func reloadData() {
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
+        }
+//        self.refresher?.endRefreshing()
     }
     
     @objc func sendComment() {
