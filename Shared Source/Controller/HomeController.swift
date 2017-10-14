@@ -86,6 +86,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func observePosts() {
+    	posts.removeAll()
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
                 let post = Posts()
