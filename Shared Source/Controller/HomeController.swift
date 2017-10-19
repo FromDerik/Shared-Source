@@ -183,15 +183,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let post = posts[indexPath.row]
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        
         let postsCollectionController = PostsCollectionController(collectionViewLayout: layout)
         postsCollectionController.posts = self.posts
         postsCollectionController.currentUser = self.currentUser
+        
         navigationItem.title = "Home"
-        navigationController?.pushViewController(postsCollectionController, animated: true)
+        navigationController?.show(postsCollectionController, sender: self)
         postsCollectionController.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         
 //        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())

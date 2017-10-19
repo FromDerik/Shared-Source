@@ -30,8 +30,8 @@ class PostsCollectionController: UICollectionViewController, UICollectionViewDel
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceHorizontal = true
         collectionView?.isPagingEnabled = true
-        collectionView?.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+//        collectionView?.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         
         collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
     }
@@ -49,14 +49,19 @@ class PostsCollectionController: UICollectionViewController, UICollectionViewDel
         postController.currentUser = self.currentUser
         
         cell.addSubview(postController.view)
+        cell.backgroundColor = .blue
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height - 120)
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
     
