@@ -30,6 +30,8 @@ class PostsCollectionController: UICollectionViewController, UICollectionViewDel
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceHorizontal = true
         collectionView?.isPagingEnabled = true
+        collectionView?.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
         
         collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
     }
