@@ -49,12 +49,13 @@ class PostsCollectionController: UICollectionViewController, UICollectionViewDel
         postController.currentUser = self.currentUser
         
         cell.addSubview(postController.view)
+        
         cell.backgroundColor = .blue
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height - 120)
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height - 60)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
