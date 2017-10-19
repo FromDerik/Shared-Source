@@ -19,16 +19,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             navigationItem.title = currentUser.username
         }
     }
-    var posts = [Posts]()
     
-    var refresher: UIRefreshControl?
+    var posts = [Posts]() {
+        didSet {
+            print(posts.count)
+        }
+    }
+    
+    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         setupNavBar()
         observePosts()
-//        setupRefresherView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -48,12 +52,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
-    
-//    func setupRefresherView() {
-//        refresher = UIRefreshControl()
-//        self.refresher?.addTarget(self, action: #selector(observePosts), for: .allEvents)
-//        collectionView?.refreshControl = refresher
-//    }
     
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -85,8 +83,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    var timer: Timer?
-    
     @objc func observePosts() {
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
@@ -109,7 +105,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
         }
-//        self.refresher?.endRefreshing()
     }
     
     @objc func handleLogout() {
@@ -189,12 +184,21 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let post = posts[indexPath.row]
-        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
-        postController.hidesBottomBarWhenPushed = true
-        postController.currentPost = post
-        postController.currentUser = self.currentUser
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let postsCollectionController = PostsCollectionController(collectionViewLayout: layout)
+        postsCollectionController.posts = self.posts
+        postsCollectionController.currentUser = self.currentUser
         navigationItem.title = "Home"
-        navigationController?.pushViewController(postController, animated: true)
+        navigationController?.pushViewController(postsCollectionController, animated: true)
+        postsCollectionController.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        
+//        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
+//        postController.currentPost = post
+//        postController.currentUser = self.currentUser
+//        navigationItem.title = "Home"
+//        navigationController?.pushViewController(postController, animated: true)
     }
     
 //    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

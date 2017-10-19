@@ -32,11 +32,12 @@ class InputBar: UIView {
         return button
     }()
     
-    lazy var textField: TextField = {
+    let textField: TextField = {
         let textField = TextField()
         textField.placeholder = "Add a comment"
         textField.layer.borderWidth = 0.75
         textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.cornerRadius = 17
         textField.layer.masksToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -50,16 +51,16 @@ class InputBar: UIView {
         separator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         addSubview(sendButton)
-        sendButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        sendButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
         sendButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         addSubview(textField)
-        textField.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
+        textField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
         textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
         textField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -4).isActive = true
-        textField.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.75).isActive = true
+        textField.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -9,6 +9,57 @@
 import UIKit
 import Firebase
 
+class PostsCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    
+    let cellId = "cellId"
+    
+    var posts = [Posts]() {
+        didSet {
+            print(posts.count)
+        }
+    }
+    
+    var currentUser = Users()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupCollectionView()
+    }
+    
+    func setupCollectionView() {
+        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
+        collectionView?.alwaysBounceHorizontal = true
+        collectionView?.isPagingEnabled = true
+        
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let post = posts[indexPath.row]
+        
+        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
+        postController.currentPost = post
+        postController.currentUser = self.currentUser
+        
+        cell.addSubview(postController.view)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+}
+
 class PostController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     let cellId = "cellId"
@@ -19,14 +70,13 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var comments = [Comments]()
     
-    var refresher: UIRefreshControl?
+    var timer: Timer?
     
     lazy var inputBar: InputBar = {
         let inputBar = InputBar()
         inputBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
         inputBar.backgroundColor = .white
         inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
-        inputBar.textField.layer.cornerRadius = (inputBar.frame.height * 0.75) / 2
         inputBar.textField.delegate = self
         return inputBar
     }()
@@ -43,7 +93,6 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         setupCollectionView()
         observeComments()
-//        setupRefresherView()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -58,14 +107,6 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
     }
-    
-//    func setupRefresherView() {
-//        refresher = UIRefreshControl()
-//        self.refresher?.addTarget(self, action: #selector(observeComments), for: .allEvents)
-//        collectionView?.refreshControl = refresher
-//    }
-    
-    var timer: Timer?
     
     @objc func observeComments() {
         guard let postId = currentPost.postId else {
@@ -94,7 +135,6 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
         }
-//        self.refresher?.endRefreshing()
     }
     
     @objc func sendComment() {
@@ -182,7 +222,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             if let postText = currentPost.post, let postTitle = currentPost.title {
                 
                 // HomeCell title / user / post labels width
-                let approximateWidth = view.frame.width - 12 - 12 - 4
+                let approximateWidth = view.frame.width - 28 // Comes from label leading + trailing + estimated insets of label
                 let size = CGSize(width: approximateWidth, height: 1000)
                 
                 // title font size
@@ -193,8 +233,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
                 let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
                 
-                // 82 is the remaining heights of views + spacing in the cell
-                return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
+                return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82) // 82 is the remaining heights of views + spacing in the cell
             }
         } else {
             
@@ -202,15 +241,14 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
             if let commentText = comment.text {
                 
                 // CommentCell comment width
-                let approximateWidth = view.frame.width - 12 - 12 - 4
+                let approximateWidth = view.frame.width - 28 // Comes from label leading + trailing + estimated insets of label
                 let size = CGSize(width: approximateWidth, height: 1000)
                 
                 // comment font size
                 let commentAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
                 let commentEstimatedFrame = NSString(string: commentText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: commentAttributes, context: nil)
                 
-                // 46 is the remaining heights of views + spacing in the cell
-                return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 46)
+                return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 46) // 46 is the remaining heights of views + spacing in the cell
             }
         }
         
@@ -229,10 +267,8 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         if value.distance(from: value.startIndex, to: value.endIndex) > 0 {
             inputBar.sendButton.isEnabled = true
-        }
-        
-        if value.distance(from: value.startIndex, to: value.endIndex) == 0 {
-            inputBar.sendButton.isEnabled = true
+        } else {
+            inputBar.sendButton.isEnabled  = false
         }
         
         return true
