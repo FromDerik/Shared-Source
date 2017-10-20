@@ -9,65 +9,6 @@
 import UIKit
 import Firebase
 
-class PostsCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    let cellId = "cellId"
-    
-    var posts = [Posts]() {
-        didSet {
-            print(posts.count)
-        }
-    }
-    
-    var currentUser = Users()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupCollectionView()
-    }
-    
-    func setupCollectionView() {
-        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
-        collectionView?.alwaysBounceHorizontal = true
-        collectionView?.isPagingEnabled = true
-//        collectionView?.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
-//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0)
-        
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        let post = posts[indexPath.row]
-        
-        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
-        postController.currentPost = post
-        postController.currentUser = self.currentUser
-        
-        cell.addSubview(postController.view)
-        
-        cell.backgroundColor = .blue
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height - 60)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-}
-
 class PostController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     let cellId = "cellId"

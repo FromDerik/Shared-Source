@@ -183,33 +183,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let post = posts[indexPath.row]
         
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        
-        let postsCollectionController = PostsCollectionController(collectionViewLayout: layout)
-        postsCollectionController.posts = self.posts
-        postsCollectionController.currentUser = self.currentUser
+        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
+        postController.currentPost = post
+        postController.currentUser = self.currentUser
         
         navigationItem.title = "Home"
-        navigationController?.show(postsCollectionController, sender: self)
-        postsCollectionController.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        
-//        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
-//        postController.currentPost = post
-//        postController.currentUser = self.currentUser
-//        navigationItem.title = "Home"
-//        navigationController?.pushViewController(postController, animated: true)
+        navigationController?.pushViewController(postController, animated: true)
     }
-    
-//    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId, for: indexPath)
-//        view.backgroundColor = .black
-//        return view
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 50)
-//    }
     
 }
