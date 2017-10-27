@@ -20,11 +20,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
-    var posts = [Posts]() {
-        didSet {
-            print(posts.count)
-        }
-    }
+    var posts = [Posts]()
     
     var timer: Timer?
     
@@ -56,9 +52,12 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
+        let searchController = UISearchController(searchResultsController: nil)
         
+        navigationItem.searchController = searchController
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     func checkIfUserIsLoggedIn() {

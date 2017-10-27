@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
 
@@ -21,16 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let layout = UICollectionViewFlowLayout()
         let homeController = HomeController(collectionViewLayout: layout)
         let homeNavController = UINavigationController(rootViewController: homeController)
-        let homeTab = UITabBarItem(title: nil, image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
-        homeNavController.tabBarItem = homeTab
-        
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [homeNavController]
-        tabBarController.selectedViewController = homeNavController
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: homeController) //tabBarController
+        window?.rootViewController = homeNavController
         
         return true
     }

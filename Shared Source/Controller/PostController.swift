@@ -41,6 +41,7 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupNavBar()
         observeComments()
     }
     
@@ -55,6 +56,10 @@ class PostController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
+    }
+    
+    func setupNavBar() {
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     @objc func observeComments() {
