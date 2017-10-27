@@ -43,6 +43,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func setupCollectionView() {
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
+        
+//        collectionView?.refreshControl = refreshControl
         collectionView?.refreshControl?.isEnabled = true
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
@@ -104,6 +106,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
         }
+        collectionView?.refreshControl?.endRefreshing()
     }
     
     @objc func handleLogout() {
