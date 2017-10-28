@@ -176,7 +176,6 @@ class LoginController: UIViewController {
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            
             if error != nil {
                 print(error!)
                 return
@@ -192,21 +191,19 @@ class LoginController: UIViewController {
             print("Form is not valid")
             return
         }
+        
         Auth.auth().createUser(withEmail: email, password: password) { (user: User?, error) in
             if error != nil {
                 print(error!)
                 return
             }
             
-            guard let uid = user?.uid else {
-                return
-            }
+            guard let uid = user?.uid else { return }
             
             // Successfully authenticated user
-            let ref = Database.database().reference(fromURL: "https://sharedsource-426ef.firebaseio.com/")
-            let usersRef = ref.child("users").child(uid)
+            let ref = Database.database().reference().child("users").child(uid)
             let values = ["username": username, "email": email]
-            usersRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
+            ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
                     print(err!)
                     return

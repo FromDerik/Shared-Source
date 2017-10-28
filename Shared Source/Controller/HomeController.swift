@@ -44,16 +44,13 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
         
-//        collectionView?.refreshControl = refreshControl
-        collectionView?.refreshControl?.isEnabled = true
-        
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
     
     func setupNavBar() {
         let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(handleCompose))
+        let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleCompose))
         let searchController = UISearchController(searchResultsController: nil)
         
         navigationItem.searchController = searchController
@@ -73,7 +70,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 if let dictionary = snapshot.value as? [String: Any] {
                     // Do stuff with current users info here
                     
-                    let user = Users()
+                    var user = Users()
                     user.username = dictionary["username"] as? String
                     user.email = dictionary["email"] as? String
                     user.uid = snapshot.key
@@ -87,7 +84,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     @objc func observePosts() {
         Database.database().reference().child("posts").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
-                let post = Posts()
+                var post = Posts()
                 post.title = dictionary["title"] as? String
                 post.post = dictionary["post"] as? String
                 post.userId = dictionary["userId"] as? String
@@ -137,23 +134,20 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
         let post = posts[indexPath.row]
         
+        guard let seconds = post.timestamp?.doubleValue, let userId = post.userId else { return cell }
+        
+        let timestampDate = NSDate(timeIntervalSince1970: seconds)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
+        
+        cell.timestampLabel.text = "• \(dateFormatter.string(from: timestampDate as Date))"
         cell.titleLabel.text = post.title
         cell.postLabel.text = post.post
         
-        if let seconds = post.timestamp?.doubleValue {
-            let timestampDate = NSDate(timeIntervalSince1970: seconds)
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh:mm a"
-            
-            cell.timestampLabel.text = "• \(dateFormatter.string(from: timestampDate as Date))"
-        }
-        
-        if let userId = post.userId {
-            Database.database().reference().child("users").child(userId).observeSingleEvent(of: .value) { (snapshot) in
-                if let dictionary = snapshot.value as? [String: Any] {
-                    cell.userLabel.text = dictionary["username"] as? String
-                }
+        Database.database().reference().child("users").child(userId).observeSingleEvent(of: .value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String: Any] {
+                cell.userLabel.text = dictionary["username"] as? String
             }
         }
         
@@ -163,36 +157,35 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let post = posts[indexPath.row]
         
-        if let postText = post.post, let postTitle = post.title {
-        	
-        	// HomeCell title / user / post labels width
-            let approximateWidth = view.frame.width - 12 - 12 - 4
-            let size = CGSize(width: approximateWidth, height: 1000)
-            
-			// title font size
-            let titleAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
-            let titleEstimatedFrame = NSString(string: postTitle).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
-			
-			// post font size
-            let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
-            let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
-			
-			// 82 is the remaining heights of views + spacing in the cell
-            return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
+        guard let postText = post.post, let postTitle = post.title else {
+        	return CGSize(width: view.frame.width, height: 100)
         }
         
-        return CGSize(width: view.frame.width, height: 100)
+        // HomeCell title / user / post labels width
+        let approximateWidth = view.frame.width - 12 - 12 - 4
+        let size = CGSize(width: approximateWidth, height: 1000)
+        
+        // title font size
+        let titleAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
+        let titleEstimatedFrame = NSString(string: postTitle).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: titleAttributes, context: nil)
+        
+        // post font size
+        let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+        let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
+        
+        // 82 is the remaining heights of views + spacing in the cell
+        return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let post = posts[indexPath.row]
         
-        let postController = PostController(collectionViewLayout: UICollectionViewFlowLayout())
-        postController.currentPost = post
-        postController.currentUser = self.currentUser
+        let selectedPostController = SelectedPostController(collectionViewLayout: UICollectionViewFlowLayout())
+        selectedPostController.currentPost = post
+        selectedPostController.currentUser = self.currentUser
         
         navigationItem.title = "Home"
-        navigationController?.pushViewController(postController, animated: true)
+        navigationController?.pushViewController(selectedPostController, animated: true)
     }
     
 }

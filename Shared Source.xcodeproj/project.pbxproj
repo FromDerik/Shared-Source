@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F2DEE441F8288E000284444 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F2DEE431F8288B200284444 /* GoogleService-Info.plist */; };
 		2F2E9F781F912ABC000675BD /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2E9F771F912ABC000675BD /* TextField.swift */; };
-		2F3491261F8D195E00A6799C /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491251F8D195E00A6799C /* PostController.swift */; };
+		2F3491261F8D195E00A6799C /* SelectedPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491251F8D195E00A6799C /* SelectedPostController.swift */; };
 		2F3491281F8D209B00A6799C /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491271F8D209B00A6799C /* Comments.swift */; };
 		2F34912A1F8D2A0900A6799C /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491291F8D2A0900A6799C /* CommentCell.swift */; };
 		2F34912D1F8EA13700A6799C /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F34912C1F8EA13700A6799C /* InputBar.swift */; };
@@ -30,7 +30,7 @@
 		0BCBDB5235ED88D7D4F99516 /* Pods_Shared_Source.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shared_Source.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F2DEE431F8288B200284444 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2F2E9F771F912ABC000675BD /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		2F3491251F8D195E00A6799C /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
+		2F3491251F8D195E00A6799C /* SelectedPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPostController.swift; sourceTree = "<group>"; };
 		2F3491271F8D209B00A6799C /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		2F3491291F8D2A0900A6799C /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		2F34912C1F8EA13700A6799C /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 				2FFD951F1F82762D002C7AB1 /* LoginController.swift */,
 				2FFD951D1F8275F5002C7AB1 /* HomeController.swift */,
 				2FFD95211F82764C002C7AB1 /* NewPostController.swift */,
-				2F3491251F8D195E00A6799C /* PostController.swift */,
+				2F3491251F8D195E00A6799C /* SelectedPostController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -304,7 +304,7 @@
 				2F2E9F781F912ABC000675BD /* TextField.swift in Sources */,
 				2FFD95161F82750A002C7AB1 /* Posts.swift in Sources */,
 				2FFD95221F82764C002C7AB1 /* NewPostController.swift in Sources */,
-				2F3491261F8D195E00A6799C /* PostController.swift in Sources */,
+				2F3491261F8D195E00A6799C /* SelectedPostController.swift in Sources */,
 				2FFD95011F827477002C7AB1 /* AppDelegate.swift in Sources */,
 				2FFD951B1F827599002C7AB1 /* PostCell.swift in Sources */,
 				2F34912D1F8EA13700A6799C /* InputBar.swift in Sources */,

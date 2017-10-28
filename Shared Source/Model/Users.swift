@@ -6,9 +6,9 @@
 //  Copyright © 2017 Derik Malcolm. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Users: NSObject {
+struct Users {
     var uid: String? // Users unique ID provided by firebase Auth
     var username: String? // Users username
     var email: String? // Users email

@@ -67,7 +67,7 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
         
         Database.database().reference().child("comments").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
-                let comment = Comments()
+                var comment = Comments()
                 comment.userId = dictionary["userId"] as? String
                 comment.text = dictionary["text"] as? String
                 comment.postId = dictionary["postId"] as? String
@@ -107,7 +107,7 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
         })
         
         inputBar.textField.text = nil
-//        inputBar.sendButton.isEnabled = false
+        inputBar.sendButton.isEnabled = false
     }
     
     // CollectionView Delegate

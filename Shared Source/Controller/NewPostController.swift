@@ -83,21 +83,16 @@ class NewPostController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func sendPost() {
-        guard let userId = self.currentUser.uid, let title = self.titleTextField.text, let post = self.postTextView.text else {
+        guard let userId = self.currentUser.uid, let title = self.titleTextField.text, let post = self.postTextView.text, !title.isEmpty else {
             return
         }
         
-        if title.isEmpty {
-            return
-        }
-        
-        let ref = Database.database().reference()
-        let postsRef = ref.child("posts").childByAutoId()
+        let ref = Database.database().reference().child("posts").childByAutoId()
         let timestampAsInt = (Int(NSDate().timeIntervalSince1970))
         let timestamp: NSNumber = NSNumber.init(value: timestampAsInt)
         let values = ["userId": userId, "title": title, "post": post, "timestamp": timestamp] as [String : Any]
         
-        postsRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
+        ref.updateChildValues(values, withCompletionBlock: { (error, ref) in
             if error != nil {
                 print(error!)
                 return

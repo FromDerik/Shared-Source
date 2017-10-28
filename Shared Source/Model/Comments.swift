@@ -6,9 +6,9 @@
 //  Copyright © 2017 Derik Malcolm. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Comments: NSObject {
+struct Comments {
     var postId: String? // The post the comment is for
     var userId: String? // The user that posted the comment
     var text: String? // The comments text
