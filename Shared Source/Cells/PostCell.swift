@@ -69,11 +69,10 @@ class PostCell: UICollectionViewCell {
     
     let commentsButton: UIButton = {
         let button = UIButton()
-        button.setImage(#imageLiteral(resourceName: "comments"), for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
+        button.setImage(#imageLiteral(resourceName: "chat"), for: .normal)
         return button
     }()
-    
+
     let buttonsView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
@@ -126,7 +125,7 @@ class PostCell: UICollectionViewCell {
         buttonsView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
         buttonsView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
         buttonsView.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        
+
         buttonsView.addArrangedSubview(commentsButton)
         
         addSubview(bottomSeparator)

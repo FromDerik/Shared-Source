@@ -23,23 +23,29 @@ class InputBar: UIView {
         return view
     }()
     
+    let textField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Add a comment"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
     let sendButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Send", for: .normal)
+        button.setImage(#imageLiteral(resourceName: "send"), for: .normal)
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    let textField: TextField = {
-        let textField = TextField()
-        textField.placeholder = "Add a comment"
-        textField.layer.borderWidth = 0.75
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.cornerRadius = 17
-        textField.layer.masksToBounds = true
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
+    let inputContainerView: UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 0.75
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.layer.cornerRadius = 17
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     func setupViews() {
@@ -49,17 +55,23 @@ class InputBar: UIView {
         separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
-        addSubview(sendButton)
-        sendButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-        sendButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        sendButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        addSubview(inputContainerView)
+        inputContainerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        inputContainerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        inputContainerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        inputContainerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
         
-        addSubview(textField)
-        textField.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        textField.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
+        inputContainerView.addSubview(sendButton)
+        sendButton.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -4).isActive = true
+        sendButton.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -4).isActive = true
+        sendButton.widthAnchor.constraint(equalToConstant: 26).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        
+        inputContainerView.addSubview(textField)
+        textField.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 8).isActive = true
+        textField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 8).isActive = true
         textField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -4).isActive = true
-        textField.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        textField.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -8).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

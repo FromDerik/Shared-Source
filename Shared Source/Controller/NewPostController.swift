@@ -25,8 +25,8 @@ class NewPostController: UIViewController, UITextFieldDelegate {
     }
     
     func setupNavBar() {
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButton))
-        let composeButton = UIBarButtonItem(image: #imageLiteral(resourceName: "create_new"), landscapeImagePhone: #imageLiteral(resourceName: "create_new"), style: .plain, target: self, action: #selector(sendPost))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissPost))
+        let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(sendPost))
         
         navigationItem.title = "Create new post"
         navigationItem.leftBarButtonItem = cancelButton
@@ -102,7 +102,7 @@ class NewPostController: UIViewController, UITextFieldDelegate {
         })
     }
     
-    @objc func handleCancelButton() {
+    @objc func dismissPost() {
         self.dismiss(animated: true, completion: nil)
     }
     
