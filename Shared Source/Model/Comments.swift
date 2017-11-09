@@ -9,8 +9,9 @@
 import Foundation
 
 struct Comments {
-    var postId: String? // The post the comment is for
     var userId: String? // The user that posted the comment
+    var username: String? // The username for the user that posted the comment
+    var postId: String? // The post the comment is for
     var text: String? // The comments text
     var timestamp: NSNumber?
 }

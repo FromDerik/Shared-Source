@@ -13,6 +13,17 @@ class PostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        
+//        layer.cornerRadius = 8
+        layer.borderWidth = 0.5
+        layer.borderColor = UIColor.lightGray.cgColor
+        
+        layer.shadowColor = UIColor.lightGray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 2
+        layer.shadowOpacity = 1
+        layer.masksToBounds = false
+        
         setupViews()
     }
     
@@ -68,8 +79,7 @@ class PostCell: UICollectionViewCell {
     }()
     
     let commentsButton: UIButton = {
-        let button = UIButton()
-        button.setImage(#imageLiteral(resourceName: "chat"), for: .normal)
+        let button = Button(imageName: "comment", highlightedImageName: "comment")
         return button
     }()
 
@@ -88,11 +98,11 @@ class PostCell: UICollectionViewCell {
     }()
     
     func setupViews() {
-        addSubview(topSeparator)
-        topSeparator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-        topSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-        topSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        topSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+//        addSubview(topSeparator)
+//        topSeparator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+//        topSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+//        topSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+//        topSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         addSubview(titleLabel)
         titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
@@ -107,12 +117,12 @@ class PostCell: UICollectionViewCell {
         addSubview(timestampLabel)
         timestampLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
         timestampLabel.leadingAnchor.constraint(equalTo: userLabel.trailingAnchor, constant: 4).isActive = true
-        timestampLabel.heightAnchor.constraint(equalToConstant: timestampLabel.font.pointSize + 1).isActive = true
+        timestampLabel.heightAnchor.constraint(equalTo: userLabel.heightAnchor).isActive = true
         
         addSubview(separator)
         separator.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8).isActive = true
-        separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
+        separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         addSubview(postLabel)
@@ -121,18 +131,18 @@ class PostCell: UICollectionViewCell {
         postLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         
         addSubview(buttonsView)
-        buttonsView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-        buttonsView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-        buttonsView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        buttonsView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        buttonsView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        buttonsView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
         buttonsView.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
         buttonsView.addArrangedSubview(commentsButton)
         
-        addSubview(bottomSeparator)
-        bottomSeparator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-        bottomSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-        bottomSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        bottomSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+//        addSubview(bottomSeparator)
+//        bottomSeparator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+//        bottomSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
+//        bottomSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+//        bottomSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

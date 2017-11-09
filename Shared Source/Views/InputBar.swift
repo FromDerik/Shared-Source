@@ -31,8 +31,7 @@ class InputBar: UIView {
     }()
     
     let sendButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "send"), for: .normal)
+        let button = Button(imageName: "send", highlightedImageName: "send")
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

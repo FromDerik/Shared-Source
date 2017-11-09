@@ -9,20 +9,17 @@
 import UIKit
 import Firebase
 
-class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
     
     let cellId = "cellId"
     let headerId = "headerId"
-    
+    var timer: Timer?
+    var posts = [Posts]()
     var currentUser = Users() {
         didSet {
             navigationItem.title = currentUser.username
         }
     }
-    
-    var posts = [Posts]()
-    
-    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +40,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func setupCollectionView() {
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
@@ -56,7 +54,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.searchController = searchController
         navigationItem.leftBarButtonItem = logoutButton
         navigationItem.rightBarButtonItem = composeButton
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     func checkIfUserIsLoggedIn() {
@@ -66,6 +64,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             guard let uid = Auth.auth().currentUser?.uid else {
                 return
             }
+            
             Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dictionary = snapshot.value as? [String: Any] {
                     // Do stuff with current users info here
@@ -134,7 +133,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
         let post = posts[indexPath.row]
         
-        guard let seconds = post.timestamp?.doubleValue, let userId = post.userId else { return cell }
+        guard let seconds = post.timestamp?.doubleValue, let userId = post.userId else {
+            return cell
+        }
         
         let timestampDate = NSDate(timeIntervalSince1970: seconds)
         
@@ -162,7 +163,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         
         // HomeCell title / user / post labels width
-        let approximateWidth = view.frame.width - 12 - 12 - 4
+        let approximateWidth = view.frame.width - 16 - 16 - 4
         let size = CGSize(width: approximateWidth, height: 1000)
         
         // title font size
@@ -173,8 +174,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
         let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
         
-        // 82 is the remaining heights of views + spacing in the cell
-        return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82)
+        // 89 is the remaining heights of views + spacing in the cell
+        return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 89)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

@@ -21,7 +21,7 @@ class LoginController: UIViewController {
         setupSegmentedControl()
     }
     
-    let loginSegmentedController: UISegmentedControl = {
+    let segmentedController: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Login", "Register"])
         sc.tintColor = .blue
         sc.selectedSegmentIndex = 0
@@ -90,14 +90,6 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    func setupSegmentedControl() {
-    	view.addSubview(loginSegmentedController)
-        loginSegmentedController.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        loginSegmentedController.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
-        loginSegmentedController.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
-        loginSegmentedController.heightAnchor.constraint(equalToConstant: 36).isActive = true
-    }
-    
     var inputsContainerViewHeightAnchor: NSLayoutConstraint?
     var usernameTextFieldHeightAnchor: NSLayoutConstraint?
     var usernameSeparatorHeightAnchor: NSLayoutConstraint?
@@ -161,8 +153,16 @@ class LoginController: UIViewController {
         loginRegisterButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
     }
     
+    func setupSegmentedControl() {
+        view.addSubview(segmentedController)
+        segmentedController.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        segmentedController.bottomAnchor.constraint(equalTo: inputsContainerView.topAnchor, constant: -12).isActive = true
+        segmentedController.widthAnchor.constraint(equalTo: inputsContainerView.widthAnchor).isActive = true
+        segmentedController.heightAnchor.constraint(equalToConstant: 36).isActive = true
+    }
+    
     @objc func handleLoginRegister() {
-        if loginSegmentedController.selectedSegmentIndex == 0 {
+        if segmentedController.selectedSegmentIndex == 0 {
             handleLogin()
         } else {
             handleRegister()
@@ -192,13 +192,15 @@ class LoginController: UIViewController {
             return
         }
         
-        Auth.auth().createUser(withEmail: email, password: password) { (user: User?, error) in
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 print(error!)
                 return
             }
             
-            guard let uid = user?.uid else { return }
+            guard let uid = user?.uid else {
+                return
+            }
             
             // Successfully authenticated user
             let ref = Database.database().reference().child("users").child(uid)
@@ -215,24 +217,24 @@ class LoginController: UIViewController {
     }
     
     @objc func handleSegmentChange() {
-        let title = loginSegmentedController.titleForSegment(at: loginSegmentedController.selectedSegmentIndex)
+        let title = segmentedController.titleForSegment(at: segmentedController.selectedSegmentIndex)
         loginRegisterButton.setTitle(title, for: .normal)
         
         // Change height of input container view and hide the username text field depending on selected segment
-        inputsContainerViewHeightAnchor?.constant = loginSegmentedController.selectedSegmentIndex == 0 ? 72 : 108
+        inputsContainerViewHeightAnchor?.constant = segmentedController.selectedSegmentIndex == 0 ? 72 : 108
         
         usernameTextFieldHeightAnchor?.isActive = false
-        usernameTextFieldHeightAnchor = usernameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginSegmentedController.selectedSegmentIndex == 0 ? 0 : 1/3)
+        usernameTextFieldHeightAnchor = usernameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: segmentedController.selectedSegmentIndex == 0 ? 0 : 1/3)
         usernameTextFieldHeightAnchor?.isActive = true
         
-        usernameSeparatorHeightAnchor?.constant = loginSegmentedController.selectedSegmentIndex == 0 ? 0 : 0.5
+        usernameSeparatorHeightAnchor?.constant = segmentedController.selectedSegmentIndex == 0 ? 0 : 0.5
         
         emailTextFieldHeightAnchor?.isActive = false
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginSegmentedController.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: segmentedController.selectedSegmentIndex == 0 ? 1/2 : 1/3)
         emailTextFieldHeightAnchor?.isActive = true
         
         passwordTextFieldHeightAnchor?.isActive = false
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: loginSegmentedController.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: segmentedController.selectedSegmentIndex == 0 ? 1/2 : 1/3)
         passwordTextFieldHeightAnchor?.isActive = true
     }
     

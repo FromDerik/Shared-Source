@@ -13,12 +13,9 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
     
     let cellId = "cellId"
     let commentCellId = "commentCellId"
-    
     var currentUser = Users()
     var currentPost = Posts()
-    
     var comments = [Comments]()
-    
     var timer: Timer?
     
     lazy var inputBar: InputBar = {
@@ -29,13 +26,8 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
         inputBar.textField.delegate = self
         return inputBar
     }()
-    
-    override var inputAccessoryView: UIView? {
-        get {
-            return inputBar
-        }
-    }
-    
+
+    override var inputAccessoryView: UIView? { get { return inputBar } }
     override var canBecomeFirstResponder: Bool { return true }
     
     override func viewDidLoad() {
@@ -53,6 +45,7 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
         collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
         collectionView?.alwaysBounceVertical = true
         collectionView?.keyboardDismissMode = .interactive
+        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
@@ -63,7 +56,9 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
     }
     
     @objc func observeComments() {
-        guard let postId = currentPost.postId else { return }
+        guard let postId = currentPost.postId else {
+            return
+        }
         
         Database.database().reference().child("comments").observe(.childAdded, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String: Any] {
@@ -73,9 +68,12 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
                 comment.postId = dictionary["postId"] as? String
                 comment.timestamp = dictionary["timestamp"] as? NSNumber
                 
-                guard comment.postId == postId else { return }
+                guard comment.postId == postId else {
+                    return
+                }
                 
-                self.comments.insert(comment, at: 0)
+//                self.comments.insert(comment, at: 0)
+                self.comments.append(comment)
                 
                 self.timer?.invalidate()
                 self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reloadData), userInfo: nil, repeats: false)
@@ -91,14 +89,15 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
     }
     
     @objc func sendComment() {
-        guard let postId = currentPost.postId, let userId = currentUser.uid, let text = inputBar.textField.text, !text.isEmpty else { return }
+        guard let postId = currentPost.postId, let userId = currentUser.uid, let text = inputBar.textField.text, !text.isEmpty else {
+            return
+        }
         
-        let ref = Database.database().reference().child("comments").childByAutoId()
         let timestampAsInt = (Int(NSDate().timeIntervalSince1970))
         let timestamp: NSNumber = NSNumber.init(value: timestampAsInt)
         let values = ["postId": postId, "userId": userId, "text": text, "timestamp": timestamp] as [String : Any]
         
-        ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
+        Database.database().reference().child("comments").childByAutoId().updateChildValues(values, withCompletionBlock: { (err, ref) in
             if err != nil {
                 print(err!)
                 return
@@ -106,8 +105,15 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
             // Successfully saved the comment into the database
         })
         
+        perform(#selector(scrollToIndexPath), with: nil, afterDelay: 0.25)
+        
         inputBar.textField.text = nil
         inputBar.sendButton.isEnabled = false
+    }
+    
+    @objc func scrollToIndexPath() {
+        let indexPath = IndexPath(row: comments.count, section: 0)
+        collectionView?.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
     }
     
     // CollectionView Delegate
@@ -120,7 +126,9 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PostCell
             
-            guard let seconds = currentPost.timestamp?.doubleValue, let userId = currentPost.userId else { return cell }
+            guard let seconds = currentPost.timestamp?.doubleValue, let userId = currentPost.userId else {
+                return cell
+            }
             
             let timestampDate = NSDate(timeIntervalSince1970: seconds)
             
@@ -143,7 +151,9 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
             
             let comment = comments[indexPath.row - 1]
             
-            guard let seconds = comment.timestamp?.doubleValue, let userId = comment.userId else { return cell }
+            guard let seconds = comment.timestamp?.doubleValue, let userId = comment.userId else {
+                return cell
+            }
             
             let timestampDate = NSDate(timeIntervalSince1970: seconds)
             
@@ -165,10 +175,12 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {
-            guard let postText = currentPost.post, let postTitle = currentPost.title else { return CGSize(width: view.frame.width, height: 100) }
+            guard let postText = currentPost.post, let postTitle = currentPost.title else {
+                return CGSize(width: view.frame.width, height: 100)
+            }
             
             // HomeCell title / user / post labels width
-            let approximateWidth = view.frame.width - 28 // Comes from label leading + trailing + estimated insets of label
+            let approximateWidth = view.frame.width - 16 - 16 - 4
             let size = CGSize(width: approximateWidth, height: 1000)
             
             // title font size
@@ -179,21 +191,25 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
             let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
             let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
             
-            return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 82) // 82 is the remaining heights of views + spacing in the cell
+            // 89 is the remaining heights of views + spacing in the cell
+            return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 89)
         } else {
             let comment = comments[indexPath.row - 1]
             
-            guard let commentText = comment.text else { return CGSize(width: view.frame.width, height: 100) }
+            guard let commentText = comment.text else {
+                return CGSize(width: view.frame.width, height: 100)
+            }
             
             // CommentCell comment width
-            let approximateWidth = view.frame.width - 28 // Comes from label leading + trailing + estimated insets of label
+            let approximateWidth = view.frame.width - 16 - 16 - 4 // Comes from label leading + trailing + estimated insets of label
             let size = CGSize(width: approximateWidth, height: 1000)
             
             // comment font size
             let commentAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
             let commentEstimatedFrame = NSString(string: commentText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: commentAttributes, context: nil)
             
-            return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 46) // 46 is the remaining heights of views + spacing in the cell
+            // 46 is the remaining heights of views + spacing in the cell
+            return CGSize(width: view.frame.width, height: commentEstimatedFrame.height + 61)
         }
     }
     

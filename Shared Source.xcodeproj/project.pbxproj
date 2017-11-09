@@ -12,6 +12,8 @@
 		2F3491281F8D209B00A6799C /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491271F8D209B00A6799C /* Comments.swift */; };
 		2F34912A1F8D2A0900A6799C /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491291F8D2A0900A6799C /* CommentCell.swift */; };
 		2F34912D1F8EA13700A6799C /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F34912C1F8EA13700A6799C /* InputBar.swift */; };
+		2FA7A0A81FB2BC9F001217F5 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7A0A71FB2BC9F001217F5 /* Button.swift */; };
+		2FF4A19E1FB3FFF80060B990 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF4A19D1FB3FFF80060B990 /* Theme.swift */; };
 		2FFD95011F827477002C7AB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD95001F827477002C7AB1 /* AppDelegate.swift */; };
 		2FFD95081F827477002C7AB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD95071F827477002C7AB1 /* Assets.xcassets */; };
 		2FFD950B1F827477002C7AB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD95091F827477002C7AB1 /* LaunchScreen.storyboard */; };
@@ -32,6 +34,8 @@
 		2F3491271F8D209B00A6799C /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		2F3491291F8D2A0900A6799C /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		2F34912C1F8EA13700A6799C /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
+		2FA7A0A71FB2BC9F001217F5 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		2FF4A19D1FB3FFF80060B990 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		2FFD94FD1F827477002C7AB1 /* Shared Source.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shared Source.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FFD95001F827477002C7AB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FFD95071F827477002C7AB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -64,8 +68,17 @@
 			isa = PBXGroup;
 			children = (
 				2F34912C1F8EA13700A6799C /* InputBar.swift */,
+				2FA7A0A71FB2BC9F001217F5 /* Button.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2FF4A19F1FB400020060B990 /* ThemeManager */ = {
+			isa = PBXGroup;
+			children = (
+				2FF4A19D1FB3FFF80060B990 /* Theme.swift */,
+			);
+			path = ThemeManager;
 			sourceTree = "<group>";
 		};
 		2FFD94F41F827477002C7AB1 = {
@@ -89,6 +102,7 @@
 		2FFD94FF1F827477002C7AB1 /* Shared Source */ = {
 			isa = PBXGroup;
 			children = (
+				2FF4A19F1FB400020060B990 /* ThemeManager */,
 				2F34912B1F8EA10400A6799C /* Views */,
 				2FFD95171F82752C002C7AB1 /* Cells */,
 				2FFD95121F8274BA002C7AB1 /* Model */,
@@ -251,15 +265,27 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Shared Source/Pods-Shared Source-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -304,7 +330,9 @@
 				2FFD95011F827477002C7AB1 /* AppDelegate.swift in Sources */,
 				2FFD951B1F827599002C7AB1 /* PostCell.swift in Sources */,
 				2F34912D1F8EA13700A6799C /* InputBar.swift in Sources */,
+				2FA7A0A81FB2BC9F001217F5 /* Button.swift in Sources */,
 				2FFD95201F82762D002C7AB1 /* LoginController.swift in Sources */,
+				2FF4A19E1FB3FFF80060B990 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

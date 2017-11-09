@@ -10,6 +10,7 @@ import Foundation
 
 struct Posts {
     var userId: String? // Unique id for the user that created the post
+    var username: String? // Username for the user that created the post
     var postId: String? // Unique id of the post
     var title: String? // Title of the post
     var post: String? // Text of the post

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 8
         let homeController = HomeController(collectionViewLayout: layout)
         let homeNavController = UINavigationController(rootViewController: homeController)
         
