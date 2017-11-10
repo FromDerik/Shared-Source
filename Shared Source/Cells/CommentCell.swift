@@ -12,31 +12,30 @@ class CommentCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         
-//        layer.cornerRadius = 8
-        layer.borderWidth = 0.5
-        layer.borderColor = UIColor.lightGray.cgColor
-        
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 2
-        layer.shadowOpacity = 1
-        layer.masksToBounds = false
+        backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
         
         setupViews()
+        createObservers()
     }
     
-    let topSeparator: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme(notification:)), name: themeNotificationName, object: nil)
+    }
+    
+    @objc func updateTheme(notification: NSNotification) {
+        UIView.animate(withDuration: 0.25) {
+            self.backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
+            self.userLabel.textColor = ThemeManager.currentTheme().cellUserLabelColor
+            self.timestampLabel.textColor = ThemeManager.currentTheme().cellUserLabelColor
+            self.separator.backgroundColor = ThemeManager.currentTheme().backgroundColor
+            self.textLabel.textColor = ThemeManager.currentTheme().cellPostLabelColor
+        }
+    }
     
     let userLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(white: 0, alpha: 0.75)
+        label.textColor = ThemeManager.currentTheme().cellUserLabelColor
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -44,7 +43,7 @@ class CommentCell: UICollectionViewCell {
     
     let timestampLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(white: 0, alpha: 0.5)
+        label.textColor = ThemeManager.currentTheme().cellUserLabelColor
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -52,7 +51,7 @@ class CommentCell: UICollectionViewCell {
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = ThemeManager.currentTheme().backgroundColor
         view.layer.cornerRadius = 0.5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -63,25 +62,12 @@ class CommentCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor(white: 0, alpha: 0.75)
+        label.textColor = ThemeManager.currentTheme().cellPostLabelColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let bottomSeparator: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     func setupViews() {
-//        addSubview(topSeparator)
-//        topSeparator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-//        topSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        topSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        topSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        
         addSubview(userLabel)
         userLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
         userLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
@@ -102,16 +88,14 @@ class CommentCell: UICollectionViewCell {
         textLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
         textLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         textLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        
-//        addSubview(bottomSeparator)
-//        bottomSeparator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-//        bottomSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        bottomSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        bottomSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

@@ -8,8 +8,6 @@
 
 import UIKit
 
-let selectedThemeKey = "SelectedTheme"
-
 enum Theme: Int {
     case light, dark
     
@@ -40,6 +38,15 @@ enum Theme: Int {
         }
     }
     
+    var navBarTintColor: UIColor {
+        switch self {
+        case .light:
+            return .white
+        case .dark:
+            return UIColor(r: 36, g: 52, b: 71)
+        }
+    }
+    
     var keyboardAppearance: UIKeyboardAppearance {
         switch self {
         case .light:
@@ -49,21 +56,52 @@ enum Theme: Int {
         }
     }
     
-    var cvBackgroundColor: UIColor {
+    // CollectionViewController
+    
+    var backgroundColor: UIColor {
         switch self {
         case .light:
             return UIColor(r: 229, g: 229, b: 234)
         case .dark:
-            return UIColor(r: 20, g: 20, b: 20)
+            return UIColor(r: 20, g: 29, b: 38)
         }
     }
     
-    var cvCellBackgroundColor: UIColor {
+    // CollectionViewCell
+    
+    var cellBackgroundColor: UIColor {
         switch self {
         case .light:
             return .white
         case .dark:
-            return UIColor(r: 35, g: 35, b: 35)
+            return UIColor(r: 27, g: 40, b: 54)
+        }
+    }
+    
+    var cellTitleLabelColor: UIColor {
+        switch self {
+        case .light:
+            return .black
+        case .dark:
+            return .white
+        }
+    }
+    
+    var cellPostLabelColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(white: 0, alpha: 0.75)
+        case .dark:
+            return UIColor(white: 1, alpha: 0.75)
+        }
+    }
+    
+    var cellUserLabelColor: UIColor {
+        switch self {
+        case .light:
+            return UIColor(white: 0, alpha: 0.5)
+        case .dark:
+            return UIColor(white: 1, alpha: 0.5)
         }
     }
 }
@@ -83,16 +121,9 @@ struct ThemeManager {
         UserDefaults.standard.synchronize()
         
         let sharedApplication = UIApplication.shared
-        sharedApplication.delegate?.window??.tintColor = theme.tintColor
         sharedApplication.statusBarStyle = theme.statusBarStyle
-        
-        UINavigationBar.appearance().barStyle = theme.navBarStyle
-        
-        let homeController = HomeController()
-        let selectedPostController = SelectedPostController()
-        
-        homeController.collectionView?.backgroundColor = theme.cvBackgroundColor
-        selectedPostController.collectionView?.backgroundColor = theme.cvBackgroundColor
+
+        NotificationCenter.default.post(name: themeNotificationName, object: nil)
     }
     
 }

@@ -18,7 +18,7 @@ class NewPostController: UIViewController, UITextFieldDelegate {
         setupViews()
         setupNavBar()
         
-        view.backgroundColor = .white
+        view.backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
         
         titleTextField.delegate = self
         titleTextField.becomeFirstResponder()
@@ -31,20 +31,23 @@ class NewPostController: UIViewController, UITextFieldDelegate {
         navigationItem.title = "Create new post"
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = composeButton
+        navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().navBarStyle
+        navigationController?.navigationBar.barTintColor = ThemeManager.currentTheme().navBarTintColor
     }
     
     let titleTextField: UITextField = {
         let title = UITextField()
-        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: UIColor(white:0, alpha:0.5)])
-        title.textColor = .black
+        title.attributedPlaceholder = NSAttributedString(string: "Add an interesting title..", attributes: [NSAttributedStringKey.foregroundColor: ThemeManager.currentTheme().cellUserLabelColor])
+        title.textColor = ThemeManager.currentTheme().cellTitleLabelColor
         title.font = UIFont.systemFont(ofSize: 14)
+        title.keyboardAppearance = ThemeManager.currentTheme().keyboardAppearance
         title.translatesAutoresizingMaskIntoConstraints = false
         return title
     }()
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = ThemeManager.currentTheme().backgroundColor
         view.layer.cornerRadius = 0.5
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -55,8 +58,9 @@ class NewPostController: UIViewController, UITextFieldDelegate {
         let tv = UITextView()
         tv.backgroundColor = .clear
         tv.font = UIFont.systemFont(ofSize: 12)
-        tv.textColor = .black
+        tv.textColor = ThemeManager.currentTheme().cellTitleLabelColor
         tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        tv.keyboardAppearance = ThemeManager.currentTheme().keyboardAppearance
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()

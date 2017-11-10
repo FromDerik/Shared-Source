@@ -21,7 +21,6 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
     lazy var inputBar: InputBar = {
         let inputBar = InputBar()
         inputBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
-        inputBar.backgroundColor = .white
         inputBar.sendButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
         inputBar.textField.delegate = self
         return inputBar
@@ -33,26 +32,33 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-        setupNavBar()
         observeComments()
+        createObservers()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme(notification:)), name: themeNotificationName, object: nil)
+    }
+    
+    @objc func updateTheme(notification: NSNotification) {
+        UIView.animate(withDuration: 0.25) {
+            self.collectionView?.backgroundColor = ThemeManager.currentTheme().backgroundColor
+//            self.navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().navBarStyle
+//            self.navigationController?.navigationBar.barTintColor = ThemeManager.currentTheme().navBarTintColor
+        }
+    }
+    
     func setupCollectionView() {
-        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
+        collectionView?.backgroundColor = ThemeManager.currentTheme().backgroundColor
         collectionView?.alwaysBounceVertical = true
         collectionView?.keyboardDismissMode = .interactive
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: commentCellId)
-    }
-    
-    func setupNavBar() {
-        navigationItem.largeTitleDisplayMode = .never
     }
     
     @objc func observeComments() {
@@ -180,7 +186,7 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
             }
             
             // HomeCell title / user / post labels width
-            let approximateWidth = view.frame.width - 16 - 16 - 4
+            let approximateWidth = view.frame.width - defaultPadding * 2 - 4
             let size = CGSize(width: approximateWidth, height: 1000)
             
             // title font size
@@ -191,8 +197,10 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
             let postAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
             let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
             
-            // 89 is the remaining heights of views + spacing in the cell
-            return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 89)
+            // The remaining height
+            let remainingHeight = defaultPadding + defaultPadding + (defaultPadding / 2) + 13 + defaultPadding
+            
+            return CGSize(width: view.frame.width, height:  titleEstimatedFrame.height + postEstimatedFrame.height + remainingHeight)
         } else {
             let comment = comments[indexPath.row - 1]
             
@@ -230,6 +238,10 @@ class SelectedPostController: UICollectionViewController, UICollectionViewDelega
         }
         
         return true
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

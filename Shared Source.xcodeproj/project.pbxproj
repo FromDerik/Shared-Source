@@ -12,8 +12,8 @@
 		2F3491281F8D209B00A6799C /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491271F8D209B00A6799C /* Comments.swift */; };
 		2F34912A1F8D2A0900A6799C /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3491291F8D2A0900A6799C /* CommentCell.swift */; };
 		2F34912D1F8EA13700A6799C /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F34912C1F8EA13700A6799C /* InputBar.swift */; };
-		2FA7A0A81FB2BC9F001217F5 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA7A0A71FB2BC9F001217F5 /* Button.swift */; };
-		2FF4A19E1FB3FFF80060B990 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF4A19D1FB3FFF80060B990 /* Theme.swift */; };
+		2FF4A19E1FB3FFF80060B990 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF4A19D1FB3FFF80060B990 /* ThemeManager.swift */; };
+		2FF4A1A51FB4F66F0060B990 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF4A1A41FB4F66F0060B990 /* Constants.swift */; };
 		2FFD95011F827477002C7AB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD95001F827477002C7AB1 /* AppDelegate.swift */; };
 		2FFD95081F827477002C7AB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD95071F827477002C7AB1 /* Assets.xcassets */; };
 		2FFD950B1F827477002C7AB1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FFD95091F827477002C7AB1 /* LaunchScreen.storyboard */; };
@@ -34,8 +34,8 @@
 		2F3491271F8D209B00A6799C /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		2F3491291F8D2A0900A6799C /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		2F34912C1F8EA13700A6799C /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
-		2FA7A0A71FB2BC9F001217F5 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
-		2FF4A19D1FB3FFF80060B990 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		2FF4A19D1FB3FFF80060B990 /* ThemeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		2FF4A1A41FB4F66F0060B990 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2FFD94FD1F827477002C7AB1 /* Shared Source.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Shared Source.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FFD95001F827477002C7AB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FFD95071F827477002C7AB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -68,7 +68,6 @@
 			isa = PBXGroup;
 			children = (
 				2F34912C1F8EA13700A6799C /* InputBar.swift */,
-				2FA7A0A71FB2BC9F001217F5 /* Button.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -76,7 +75,7 @@
 		2FF4A19F1FB400020060B990 /* ThemeManager */ = {
 			isa = PBXGroup;
 			children = (
-				2FF4A19D1FB3FFF80060B990 /* Theme.swift */,
+				2FF4A19D1FB3FFF80060B990 /* ThemeManager.swift */,
 			);
 			path = ThemeManager;
 			sourceTree = "<group>";
@@ -151,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				2FFD95241F82787A002C7AB1 /* Extensions.swift */,
+				2FF4A1A41FB4F66F0060B990 /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -325,14 +325,14 @@
 				2F34912A1F8D2A0900A6799C /* CommentCell.swift in Sources */,
 				2FFD951E1F8275F5002C7AB1 /* HomeController.swift in Sources */,
 				2FFD95161F82750A002C7AB1 /* Posts.swift in Sources */,
+				2FF4A1A51FB4F66F0060B990 /* Constants.swift in Sources */,
 				2FFD95221F82764C002C7AB1 /* NewPostController.swift in Sources */,
 				2F3491261F8D195E00A6799C /* SelectedPostController.swift in Sources */,
 				2FFD95011F827477002C7AB1 /* AppDelegate.swift in Sources */,
 				2FFD951B1F827599002C7AB1 /* PostCell.swift in Sources */,
 				2F34912D1F8EA13700A6799C /* InputBar.swift in Sources */,
-				2FA7A0A81FB2BC9F001217F5 /* Button.swift in Sources */,
 				2FFD95201F82762D002C7AB1 /* LoginController.swift in Sources */,
-				2FF4A19E1FB3FFF80060B990 /* Theme.swift in Sources */,
+				2FF4A19E1FB3FFF80060B990 /* ThemeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

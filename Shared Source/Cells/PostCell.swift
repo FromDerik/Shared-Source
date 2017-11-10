@@ -12,58 +12,32 @@ class PostCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         
-//        layer.cornerRadius = 8
-        layer.borderWidth = 0.5
-        layer.borderColor = UIColor.lightGray.cgColor
-        
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 2
-        layer.shadowOpacity = 1
-        layer.masksToBounds = false
+        backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
         
         setupViews()
+        createObservers()
     }
     
-    let topSeparator: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme(notification:)), name: themeNotificationName, object: nil)
+    }
+    
+    @objc func updateTheme(notification: NSNotification) {
+        UIView.animate(withDuration: 0.25) {
+            self.backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
+            self.titleLabel.textColor = ThemeManager.currentTheme().cellTitleLabelColor
+            self.postLabel.textColor = ThemeManager.currentTheme().cellPostLabelColor
+            self.userLabel.textColor = ThemeManager.currentTheme().cellUserLabelColor
+            self.timestampLabel.textColor = ThemeManager.currentTheme().cellUserLabelColor
+        }
+    }
     
     let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let separator: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.layer.cornerRadius = 0.5
-        view.layer.masksToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let userLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor(white: 0, alpha: 0.75)
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let timestampLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor(white: 0, alpha: 0.5)
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.textColor = ThemeManager.currentTheme().cellTitleLabelColor
+        label.font = UIFont.systemFont(ofSize: defaultTextSize + 2)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -72,14 +46,32 @@ class PostCell: UICollectionViewCell {
         let label = UILabel()
         label.backgroundColor = .clear
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = UIColor(white: 0, alpha: 0.75)
+        label.font = UIFont.systemFont(ofSize: defaultTextSize)
+        label.textColor = ThemeManager.currentTheme().cellPostLabelColor
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let userLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = ThemeManager.currentTheme().cellUserLabelColor
+        label.font = UIFont.systemFont(ofSize: defaultTextSize, weight: .light)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let timestampLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = ThemeManager.currentTheme().cellUserLabelColor
+        label.font = UIFont.systemFont(ofSize: defaultTextSize, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let commentsButton: UIButton = {
-        let button = Button(imageName: "comment", highlightedImageName: "comment")
+        let button = UIButton()
+        button.setImage(UIImage(named: "comment_outlined"), for: .normal)
+        button.setImage(UIImage(named: "comment_filled"), for: .highlighted)
         return button
     }()
 
@@ -90,62 +82,49 @@ class PostCell: UICollectionViewCell {
         return view
     }()
     
-    let bottomSeparator: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     func setupViews() {
-//        addSubview(topSeparator)
-//        topSeparator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-//        topSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        topSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        topSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        
         addSubview(titleLabel)
-        titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        
-        addSubview(userLabel)
-        userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
-        userLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        userLabel.heightAnchor.constraint(equalToConstant: userLabel.font.pointSize + 1).isActive = true
-        
-        addSubview(timestampLabel)
-        timestampLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4).isActive = true
-        timestampLabel.leadingAnchor.constraint(equalTo: userLabel.trailingAnchor, constant: 4).isActive = true
-        timestampLabel.heightAnchor.constraint(equalTo: userLabel.heightAnchor).isActive = true
-        
-        addSubview(separator)
-        separator.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8).isActive = true
-        separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: defaultPadding).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: defaultPadding).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -defaultPadding).isActive = true
         
         addSubview(postLabel)
-        postLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 8).isActive = true
-        postLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        postLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        postLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: defaultPadding).isActive = true
+        postLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: defaultPadding).isActive = true
+        postLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -defaultPadding).isActive = true
         
-        addSubview(buttonsView)
-        buttonsView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        buttonsView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        buttonsView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
-        buttonsView.heightAnchor.constraint(equalToConstant: 16).isActive = true
-
-        buttonsView.addArrangedSubview(commentsButton)
+        addSubview(userLabel)
+//        userLabel.topAnchor.constraint(equalTo: postLabel.bottomAnchor, constant: defaultPadding / 2).isActive = true
+        userLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: defaultPadding).isActive = true
+        userLabel.heightAnchor.constraint(equalToConstant: userLabel.font.pointSize + 1).isActive = true
+        userLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -defaultPadding).isActive = true
         
-//        addSubview(bottomSeparator)
-//        bottomSeparator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-//        bottomSeparator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-//        bottomSeparator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-//        bottomSeparator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        addSubview(timestampLabel)
+//        timestampLabel.topAnchor.constraint(equalTo: postLabel.bottomAnchor, constant: defaultPadding / 2).isActive = true
+        timestampLabel.leadingAnchor.constraint(equalTo: userLabel.trailingAnchor, constant: 4).isActive = true
+        timestampLabel.heightAnchor.constraint(equalTo: userLabel.heightAnchor).isActive = true
+        timestampLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -defaultPadding).isActive = true
+        
+//        addSubview(separator)
+//        separator.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 8).isActive = true
+//        separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+//        separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+//        separator.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+//        addSubview(buttonsView)
+//        buttonsView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+//        buttonsView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+//        buttonsView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
+//        buttonsView.heightAnchor.constraint(equalToConstant: 16).isActive = true
+//
+//        buttonsView.addArrangedSubview(commentsButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

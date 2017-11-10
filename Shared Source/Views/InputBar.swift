@@ -13,34 +13,58 @@ class InputBar: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
+        
+        backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
+        
         setupViews()
+        createObservers()
+    }
+    
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme(notification:)), name: themeNotificationName, object: nil)
+    }
+    
+    @objc func updateTheme(notification: NSNotification) {
+        UIView.animate(withDuration: 0.25) {
+            self.backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
+            self.separator.backgroundColor = ThemeManager.currentTheme().backgroundColor
+            self.textField.attributedPlaceholder = NSAttributedString(string: "Add a comment..", attributes: [NSAttributedStringKey.foregroundColor : ThemeManager.currentTheme().cellUserLabelColor])
+            self.textField.keyboardAppearance = ThemeManager.currentTheme().keyboardAppearance
+            self.sendButton.tintColor = ThemeManager.currentTheme().tintColor
+            self.inputContainerView.backgroundColor = ThemeManager.currentTheme().backgroundColor
+        }
     }
     
     let separator: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
+        view.backgroundColor = ThemeManager.currentTheme().backgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Add a comment"
+        textField.textColor = ThemeManager.currentTheme().cellTitleLabelColor
+        let attributedPlaceholder = NSAttributedString(string: "Add a comment..", attributes: [NSAttributedStringKey.foregroundColor : ThemeManager.currentTheme().cellUserLabelColor])
+        textField.attributedPlaceholder = attributedPlaceholder
+        textField.keyboardAppearance = ThemeManager.currentTheme().keyboardAppearance
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
     let sendButton: UIButton = {
-        let button = Button(imageName: "send", highlightedImageName: "send")
+        let button = UIButton()
+        button.setImage(UIImage(named: "send_outlined"), for: .normal)
+        button.setImage(UIImage(named: "send_filled"), for: .highlighted)
         button.isEnabled = false
+        button.tintColor = ThemeManager.currentTheme().tintColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     let inputContainerView: UIView = {
         let view = UIView()
-        view.layer.borderWidth = 0.75
-        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.backgroundColor = ThemeManager.currentTheme().backgroundColor
         view.layer.cornerRadius = 17
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +99,10 @@ class InputBar: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

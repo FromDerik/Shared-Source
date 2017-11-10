@@ -26,6 +26,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         setupCollectionView()
         setupNavBar()
         observePosts()
+        createObservers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -33,28 +34,60 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         checkIfUserIsLoggedIn()
     }
     
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme(notification:)), name: themeNotificationName, object: nil)
+    }
+    
+    @objc func updateTheme(notification: NSNotification) {
+        UIView.animate(withDuration: 0.25) {
+            self.collectionView?.backgroundColor = ThemeManager.currentTheme().backgroundColor
+            self.navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().navBarStyle
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.currentTheme().navBarTintColor
+        }
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
     func setupCollectionView() {
-        collectionView?.backgroundColor = UIColor(r: 229, g: 229, b: 234)
+        self.collectionView?.backgroundColor = ThemeManager.currentTheme().backgroundColor
         collectionView?.alwaysBounceVertical = true
-        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         
         collectionView?.register(PostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
     }
     
     func setupNavBar() {
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+//        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+//        let darkModeButton = UIBarButtonItem(image: UIImage(named: "darkButton_outlined"), style: .plain, target: self, action: #selector(handleThemeChanged))
         let composeButton = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(handleCompose))
         let searchController = UISearchController(searchResultsController: nil)
         
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleThemeChanged(sender:)))
+        gesture.minimumPressDuration = 1.5
+        gesture.allowableMovement = 0.2
+        
         navigationItem.searchController = searchController
-        navigationItem.leftBarButtonItem = logoutButton
+//        navigationItem.leftBarButtonItem = darkModeButton
         navigationItem.rightBarButtonItem = composeButton
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().navBarStyle
+        navigationController?.navigationBar.barTintColor = ThemeManager.currentTheme().navBarTintColor
+        navigationController?.navigationBar.addGestureRecognizer(gesture)
+    }
+    
+    @objc func handleThemeChanged(sender: UILongPressGestureRecognizer) {
+        let currentTheme = ThemeManager.currentTheme()
+        
+        if sender.state == .began {
+            switch currentTheme {
+            case .light:
+                ThemeManager.apply(theme: .dark)
+            case .dark:
+                ThemeManager.apply(theme: .light)
+            }
+        }
     }
     
     func checkIfUserIsLoggedIn() {
@@ -163,7 +196,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         
         // HomeCell title / user / post labels width
-        let approximateWidth = view.frame.width - 16 - 16 - 4
+        let approximateWidth = view.frame.width - defaultPadding * 2 - 4
         let size = CGSize(width: approximateWidth, height: 1000)
         
         // title font size
@@ -175,18 +208,26 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let postEstimatedFrame = NSString(string: postText).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: postAttributes, context: nil)
         
         // 89 is the remaining heights of views + spacing in the cell
-        return CGSize(width: view.frame.width, height: titleEstimatedFrame.height + postEstimatedFrame.height + 89)
+        let remainingHeight = defaultPadding + defaultPadding + (defaultPadding / 2) + 13 + defaultPadding
+        
+        return CGSize(width: view.frame.width, height:  titleEstimatedFrame.height + postEstimatedFrame.height + remainingHeight)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let post = posts[indexPath.row]
         
-        let selectedPostController = SelectedPostController(collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 2
+        let selectedPostController = SelectedPostController(collectionViewLayout: layout)
         selectedPostController.currentPost = post
         selectedPostController.currentUser = self.currentUser
         
         navigationItem.title = "Home"
         navigationController?.pushViewController(selectedPostController, animated: true)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

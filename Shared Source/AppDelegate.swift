@@ -13,19 +13,23 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    let theme = ThemeManager.currentTheme()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
         
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 8
+        layout.minimumLineSpacing = 2
         let homeController = HomeController(collectionViewLayout: layout)
         let homeNavController = UINavigationController(rootViewController: homeController)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = homeNavController
+        
+        ThemeManager.apply(theme: theme)
         
         return true
     }
