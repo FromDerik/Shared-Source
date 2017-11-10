@@ -28,6 +28,7 @@ class InputBar: UIView {
         UIView.animate(withDuration: 0.25) {
             self.backgroundColor = ThemeManager.currentTheme().cellBackgroundColor
             self.separator.backgroundColor = ThemeManager.currentTheme().backgroundColor
+            self.textField.textColor = ThemeManager.currentTheme().cellTitleLabelColor
             self.textField.attributedPlaceholder = NSAttributedString(string: "Add a comment..", attributes: [NSAttributedStringKey.foregroundColor : ThemeManager.currentTheme().cellUserLabelColor])
             self.textField.keyboardAppearance = ThemeManager.currentTheme().keyboardAppearance
             self.sendButton.tintColor = ThemeManager.currentTheme().tintColor
