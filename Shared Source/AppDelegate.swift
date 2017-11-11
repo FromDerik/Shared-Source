@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 2
         let homeController = HomeController(collectionViewLayout: layout)
+        homeController.useLayoutToLayoutNavigationTransitions = false
         let homeNavController = UINavigationController(rootViewController: homeController)
         
         window = UIWindow(frame: UIScreen.main.bounds)

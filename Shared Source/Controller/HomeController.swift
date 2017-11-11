@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
+class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, UINavigationControllerDelegate {
     
     let cellId = "cellId"
     let headerId = "headerId"
@@ -218,13 +218,24 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 2
+        
         let selectedPostController = SelectedPostController(collectionViewLayout: layout)
+//        selectedPostController.useLayoutToLayoutNavigationTransitions = true
+        
         selectedPostController.currentPost = post
         selectedPostController.currentUser = self.currentUser
         
         navigationItem.title = "Home"
         navigationController?.pushViewController(selectedPostController, animated: true)
     }
+    
+//    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+//        if viewController.isKind(of: SelectedPostController.self) {
+//            let spc = viewController as! SelectedPostController
+//            spc.collectionView?.dataSource = spc
+//            spc.collectionView?.delegate = spc
+//        }
+//    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
